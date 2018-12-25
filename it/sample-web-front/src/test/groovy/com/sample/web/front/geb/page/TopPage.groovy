@@ -9,6 +9,11 @@ class TopPage extends Page{
     }
 
     static content = {
-
+        "ありがとをクリックする"{
+            find('#toArigato').click()
+        }
+        "一番上のありがとの件名"{
+            find('.arigato', 0).find('.subject').text()
+        }
     }
 }

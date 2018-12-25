@@ -8,7 +8,7 @@
 <!--/* この形式のコメントはHTMLソースから削除される */-->
 <div layout:fragment="content">
     <h2>感謝の気持ちを伝えよう</h2>
-    <form th:object="${arigatoForm}" th:action="@{/arigato}" method="post">
+    <form th:object="${arigatoForm}" th:action="@{/arigato}" method="post" id="arigatoForm">
         <div class="box-body">
             <select th:replace="~{common/selectField :: select ('誰に？', 'toId', ${users})}" />
             <input th:replace="~{common/inputField :: input ('text', '件名', 'subject')}" />

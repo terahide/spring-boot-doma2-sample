@@ -8,7 +8,7 @@
         <!--/* この形式のコメントはHTMLソースから削除される */-->
         <div layout:fragment="content">
             <h2>Front Home</h2>
-            <a th:href="@{/arigato}">ありがと</a>
+            <a th:href="@{/arigato}" id="toArigato">ありがと</a>
 
             <section class="arigato" th:each="arigato : ${page.data}" th:object="${arigato}">
                 <hr />
