@@ -64,4 +64,9 @@ public class User extends DomaDtoImpl {
     @Transient // Domaで永続化しない
     @JsonIgnore
     UploadFile uploadFile;
+
+    @Override
+    public String toString() {
+        return String.format("%s %s",lastName ,firstName);
+    }
 }
