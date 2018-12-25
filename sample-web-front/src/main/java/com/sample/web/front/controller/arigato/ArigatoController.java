@@ -1,11 +1,17 @@
 package com.sample.web.front.controller.arigato;
 
+import com.sample.domain.dto.arigato.Arigato;
 import com.sample.domain.dto.common.Pageable;
+import com.sample.domain.dto.user.User;
 import com.sample.domain.dto.user.UserCriteria;
+import com.sample.domain.exception.NoDataFoundException;
+import com.sample.domain.service.arigato.ArigatoService;
 import com.sample.domain.service.users.UserService;
 import com.sample.web.base.controller.html.AbstractHtmlController;
+import com.sample.web.base.util.WebSecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +30,12 @@ public class ArigatoController extends AbstractHtmlController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ArigatoService arigatoService;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     public String getFunctionName() {
@@ -45,6 +57,19 @@ public class ArigatoController extends AbstractHtmlController {
             setFlashAttributeErrors(attributes, br);
             return "redirect:/arigato";
         }
+
+        String fromEmail = WebSecurityUtils.getLoginId();
+        val arigato = modelMapper.map(form, Arigato.class);
+        arigato.setFromId(findUserBy(fromEmail).getId());
+
+        arigatoService.say(arigato);
+
         return "redirect:/";
+    }
+
+    private User findUserBy(String email) {
+        val criteria = new UserCriteria();
+        criteria.setEmail(email);
+        return userService.findById(criteria).orElseThrow(() -> new NoDataFoundException("ユーザが見つかりません。email:"+email));
     }
 }
