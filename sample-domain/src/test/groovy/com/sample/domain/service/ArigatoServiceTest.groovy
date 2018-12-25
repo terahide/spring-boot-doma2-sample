@@ -2,6 +2,7 @@ package com.sample.domain.service
 
 import com.sample.domain.dao.AuditInfoHolder
 import com.sample.domain.dto.arigato.Arigato
+import com.sample.domain.dto.common.Pageable
 import com.sample.domain.service.arigato.ArigatoService
 import com.sample.domain.test.helper.Doma2TestHelper
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +35,11 @@ class ArigatoServiceTest extends Specification{
         arigato.toId = 1
         arigato.subject = 'subject'
         arigato.body = 'ありがと'
-        expect:
+        when: "ありがとを伝える"
         sut.say(arigato)
+        and: "ありがとを取得する"
+        def page = sut.search(Pageable.NO_LIMIT)
+        then:
+        page.count == 1
     }
 }
