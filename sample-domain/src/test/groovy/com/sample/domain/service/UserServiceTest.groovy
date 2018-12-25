@@ -5,6 +5,7 @@ import com.sample.domain.dto.common.Pageable
 import com.sample.domain.dto.user.User
 import com.sample.domain.dto.user.UserCriteria
 import com.sample.domain.service.users.UserService
+import com.sample.domain.test.helper.Doma2TestHelper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -22,8 +23,13 @@ class UserServiceTest extends Specification {
     @Autowired
     UserService userService
 
+    @Autowired
+    Doma2TestHelper h
+
     def setup(){
         AuditInfoHolder.set "tes", LocalDateTime.now()
+
+        h.delete 'users'
     }
 
     def "存在しないメールアドレスで絞り込んだ場合、0件が返ること"() {
