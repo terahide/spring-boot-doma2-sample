@@ -43,8 +43,11 @@
                         </tr>
                         <tr>
                             <th>添付画像</th>
-                            <td><img th:src="${image}"></td>
+                            <td>
+                                <img width="300px" th:if="*{uploadFileId != null}" th:src="@{/users/users/image/__*{id}__}" />
+                            </td>
                         </tr>
+
                     </table>
                 </div>
                 <div class="box-footer clearfix">

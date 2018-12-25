@@ -62,7 +62,7 @@ public class UserRepository extends BaseRepository {
         user.ifPresent(u -> {
             val uploadFileId = u.getUploadFileId();
             val uploadFile = ofNullable(uploadFileId).map(uploadFileDao::selectById);
-            uploadFile.ifPresent(u::setUploadFile);
+            uploadFile.orElse(Optional.empty()).ifPresent(u::setUploadFile);
         });
 
         return user;

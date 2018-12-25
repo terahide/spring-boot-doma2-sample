@@ -5,8 +5,15 @@ import static com.sample.web.base.WebConst.GLOBAL_MESSAGE;
 import static com.sample.web.base.WebConst.MESSAGE_DELETED;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.sample.domain.service.system.UploadFileService;
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +53,9 @@ public class UserHtmlController extends AbstractHtmlController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UploadFileService uploadFileService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -324,5 +334,20 @@ public class UserHtmlController extends AbstractHtmlController {
         val view = new PdfView("reports/users.jrxml", users.getData(), filename);
 
         return new ModelAndView(view);
+    }
+
+    @GetMapping("/image/{userId}")
+    public ResponseEntity<byte[]> image(@PathVariable long userId) {
+        val user = userService.findById(userId);
+        val file = uploadFileService.getUploadFile(user.getUploadFileId());
+
+        byte[] body = Base64.decodeBase64(file.getContent().toBase64());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(Optional.ofNullable(file.getContentType()).orElse(MediaType.IMAGE_JPEG_VALUE)));
+        headers.add("content-disposition", "inline;filename=" + file.getFilename());
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+        return new ResponseEntity(body, headers, HttpStatus.OK);
     }
 }

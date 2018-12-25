@@ -1,6 +1,7 @@
 package com.sample.domain.dao.system;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.seasar.doma.*;
 import org.seasar.doma.boot.ConfigAutowireable;
@@ -30,7 +31,7 @@ public interface UploadFileDao {
      * @return
      */
     @Select
-    UploadFile selectById(Long id);
+    Optional<UploadFile> selectById(Long id);
 
     /**
      * アップロードファイルを1件取得します。
