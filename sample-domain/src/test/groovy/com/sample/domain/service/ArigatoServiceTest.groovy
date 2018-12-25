@@ -41,5 +41,7 @@ class ArigatoServiceTest extends Specification{
         def page = sut.search(Pageable.NO_LIMIT)
         then:
         page.count == 1
+        and:
+        page.data[0].from.name != null
     }
 }

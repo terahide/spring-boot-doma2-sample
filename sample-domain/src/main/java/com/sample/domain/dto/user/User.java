@@ -67,6 +67,10 @@ public class User extends DomaDtoImpl {
 
     @Override
     public String toString() {
+        return getName();
+    }
+
+    public String getName() {
         return String.format("%s %s",lastName ,firstName);
     }
 }

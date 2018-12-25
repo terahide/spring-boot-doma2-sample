@@ -3,6 +3,7 @@ package com.sample.domain.dto.arigato;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sample.domain.dto.common.DomaDtoImpl;
 import com.sample.domain.dto.system.UploadFile;
+import com.sample.domain.dto.user.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.seasar.doma.*;
@@ -26,7 +27,9 @@ public class Arigato extends DomaDtoImpl {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @JsonIgnore
     Long fromId;
+    @JsonIgnore
     Long toId;
     String subject;
     String body;
@@ -39,6 +42,11 @@ public class Arigato extends DomaDtoImpl {
     @Transient // Domaで永続化しない
     @JsonIgnore
     List<UploadFile> uploadFile;
+
+    @Transient
+    User from;
+    @Transient
+    User to;
 
     public Arigato() {
         super();
