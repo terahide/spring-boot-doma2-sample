@@ -9,6 +9,9 @@ class TopPage extends Page{
     }
 
     static content = {
-
+        "メニューのユーザ一覧をクリックする"{
+            find('#userMenu').click()
+            find('#toUserList').click()
+        }
     }
 }

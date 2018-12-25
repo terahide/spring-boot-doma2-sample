@@ -3,17 +3,17 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/sidebarLayout}">
     <head>
-        <title>顧客マスタ</title>
+        <title>ユーザ一覧</title>
     </head>
     <body>
         <div layout:fragment="sidebar">
             <div th:replace="~{layouts/sidebar :: sidebar ('user', 'user')}"></div>
         </div>
         <section layout:fragment="content-header">
-            <h1>顧客検索</h1>
+            <h1>ユーザ検索</h1>
             <ol class="breadcrumb">
                 <li><a th:href="@{/}">Home</a></li>
-                <li>顧客検索</li>
+                <li>ユーザ検索</li>
             </ol>
         </section>
         <section layout:fragment="content">
@@ -43,7 +43,7 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a th:href="@{/users/users/new}">ユーザー登録</a></li>
+                                        <li><a id="toUserForm" th:href="@{/users/users/new}">ユーザ登録</a></li>
                                         <li><a th:href="@{/users/users/download/ユーザー.csv}">CSVダウンロード</a></li>
                                         <li><a th:href="@{/users/users/download/ユーザー.xlsx}">Excelダウンロード</a></li>
                                         <li><a th:href="@{/users/users/download/ユーザー.pdf}">PDFダウンロード</a></li>

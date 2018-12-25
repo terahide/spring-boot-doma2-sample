@@ -3,18 +3,18 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/sidebarLayout}">
     <head>
-        <title>顧客マスタ</title>
+        <title>ユーザ登録</title>
     </head>
     <body>
         <div layout:fragment="sidebar">
             <div th:replace="~{layouts/sidebar :: sidebar ('user', 'user')}"></div>
         </div>
         <section layout:fragment="content-header">
-            <h1 th:with="text=${userForm.isNew()} ? '顧客登録' : '顧客編集'" th:text="${text}">顧客登録</h1>
+            <h1 th:with="text=${userForm.isNew()} ? 'ユーザ登録' : 'ユーザ編集'" th:text="${text}">ユーザ登録</h1>
             <ol class="breadcrumb">
                 <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/users/users/find(page=1)}">顧客検索</a></li>
-                <li th:with="text=${userForm.isNew()} ? '顧客登録' : '顧客編集'" th:text="${text}">顧客登録</li>
+                <li><a th:href="@{/users/users/find(page=1)}">ユーザ検索</a></li>
+                <li th:with="text=${userForm.isNew()} ? 'ユーザ登録' : 'ユーザ編集'" th:text="${text}">ユーザ登録</li>
             </ol>
         </section>
         <section layout:fragment="content">

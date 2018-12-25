@@ -8,15 +8,15 @@
                     <!--/* Font-Awesomeアイコン http://fontawesome.io/icons/ */-->
                     <!--li class="header">機能一覧</li-->
                     <!--/* メニュー項目 */-->
-                    <li class="treeview" th:class="|treeview ${category=='user' ? 'active' : ''}|">
+                    <li id="userMenu" class="treeview" th:class="|treeview ${category=='user' ? 'active' : ''}|">
                         <a href="#"><i class="fa fa-user-plus"></i>
-                            <span>顧客管理</span>
+                            <span>ユーザ管理</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li th:class="${item=='user' ? 'active' : ''}"><a href="#" th:href="@{/users/users/find(page=1)}"><i class="fa fa-user-o"></i>顧客マスタ</a></li>
+                            <li id="toUserList" th:class="${item=='user' ? 'active' : ''}"><a href="#" th:href="@{/users/users/find(page=1)}"><i class="fa fa-user-o"></i>ユーザ一覧</a></li>
                         </ul>
                     </li>
                     <li class="treeview" th:class="|treeview ${category=='system' ? 'active' : ''}|">
