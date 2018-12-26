@@ -7043,3 +7043,6 @@ table td.action-column {
 hr {
   border-top: 1px dotted #34302D;
 }
+a.fav.checked:after {
+content: "を解除"
+}
