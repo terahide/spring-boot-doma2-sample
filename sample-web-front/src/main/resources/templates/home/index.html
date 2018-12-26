@@ -21,11 +21,24 @@
             </section>
         </div>
         <div layout:fragment="scripts" th:remove="tag">
+            <input
+                    type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}" />
             <script type="text/javascript">
                 $().ready(() => {
                     $('.fav').on('click', event => {
-                        $(event.currentTarget).toggleClass('checked');
-                    })
+                        $.ajax({
+                            url: '/api/v1/arigato/' + 1 + '/fav',
+                            type: 'PUT',
+                            data:{check: true}
+                        }).done( (data) => {
+                            console.log(data.fav_counts);
+                            $(event.currentTarget).toggleClass('checked');
+                        }).fail( (data) => {
+                            alert('error'); //TODO Fake It
+                        })
+                    });
                 });
             </script>
         </div>>

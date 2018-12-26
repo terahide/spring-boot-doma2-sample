@@ -6,17 +6,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/arigato")
 @Slf4j
 public class ArigatoRestController extends AbstractRestController {
-    @GetMapping("/{arigatoId}/fav")
-    public ResponseEntity<FavResult> fav(@PathVariable long arigatoId){
+    @PutMapping("/{arigatoId}/fav")
+    public ResponseEntity<FavResult> fav(@PathVariable long arigatoId,
+                                 @RequestParam(required = true) boolean check){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(new FavResult(arigatoId, 0), headers, HttpStatus.OK);
