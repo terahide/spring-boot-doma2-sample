@@ -3,7 +3,9 @@ package com.sample.domain.service.arigato;
 import com.sample.domain.dto.arigato.Arigato;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
+import com.sample.domain.dto.system.UploadFile;
 import com.sample.domain.repository.arigato.ArigatoRepository;
+import com.sample.domain.repository.system.UploadFileRepository;
 import com.sample.domain.repository.users.UserRepository;
 import com.sample.domain.service.BaseTransactionalService;
 import lombok.val;
@@ -19,6 +21,8 @@ public class ArigatoService extends BaseTransactionalService {
     ArigatoRepository arigatoRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UploadFileRepository uploadFileRepository;
 
     public void say(Arigato arigato) {
         Assert.notNull(arigato,"arigato must not be null");
@@ -29,11 +33,21 @@ public class ArigatoService extends BaseTransactionalService {
     public Page<Arigato> search(Pageable pageable) {
         val page = arigatoRepository.findBy(pageable);
         page.getData().stream().forEach(this::populateUser);
+        page.getData().stream().forEach(this::populateImage);
         return page;
     }
 
     private void populateUser(Arigato a) {
         a.setFrom(userRepository.findById(a.getFromId()));
         a.setTo(userRepository.findById(a.getToId()));
+    }
+
+    private void populateImage(Arigato arigato) {
+        val images = arigatoRepository.findImageByArigatoId(arigato.getId());
+        images.stream().forEach(i -> arigato.getUploadFileId().add(i.getId()));
+    }
+
+    public UploadFile getImage(long uploadFileId) {
+        return uploadFileRepository.findById(uploadFileId);
     }
 }
