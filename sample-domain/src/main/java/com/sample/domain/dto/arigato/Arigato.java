@@ -48,6 +48,16 @@ public class Arigato extends DomaDtoImpl {
     @Transient
     User to;
 
+    public boolean hasImage(){
+        return ! uploadFileId.isEmpty();
+    }
+
+    public Long getFirstImageId(){
+        return uploadFileId.stream()
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("not has image!"));
+    }
+
     public Arigato() {
         super();
         this.uploadFile = new ArrayList<>();
