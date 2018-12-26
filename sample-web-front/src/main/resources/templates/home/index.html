@@ -12,10 +12,10 @@
 
             <section class="arigato" th:each="arigato : ${page.data}" th:object="${arigato}">
                 <hr />
-                to <span><image th:if="*{to.uploadFileId != null}" height="30px" th:src="@{/user/image/__*{to.id}__}" /><span th:text="*{to.name}"></span></span>
+                to <span><image th:if="*{to.hasImage()}" height="30px" th:src="@{/user/image/__*{to.id}__}" /><span th:text="*{to.name}"></span></span>
                 <div th:text="*{subject}" class="subject"></div>
                 <div th:text="*{body}"></div>
-                from <span><image th:if="*{from.uploadFileId != null}" height="30px" th:src="@{/user/image/__*{from.id}__}" /><span th:text="*{from.name}"></span></span>
+                from <span><image th:if="*{from.hasImage()}" height="30px" th:src="@{/user/image/__*{from.id}__}" /><span th:text="*{from.name}"></span></span>
             </section>
         </div>
     </body>

@@ -70,6 +70,10 @@ public class User extends DomaDtoImpl {
         return getName();
     }
 
+    public boolean hasImage(){
+        return uploadFileId != null;
+    }
+
     public String getName() {
         return String.format("%s %s",lastName ,firstName);
     }
