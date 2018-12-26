@@ -17,7 +17,7 @@
                 <div th:text="*{body}"></div>
                 <div th:if="*{hasImage()}" ><image width="300px" th:src="@{/arigato/image/__*{firstImageId}__}" /></div>
                 from <span><image th:if="*{from.hasImage()}" height="30px" th:src="@{/user/image/__*{from.id}__}" /><span th:text="*{from.name}"></span></span>
-                <div>★ いいね！<span>13</span>人 <a href="javascript:void(0)" class="fav">いいね！</a></div>
+                <div>★ いいね！<span class="favCounts">13</span>人 <a href="javascript:void(0)" th:data-id="*{id}" class="fav">いいね！</a></div>
             </section>
         </div>
         <div layout:fragment="scripts" th:remove="tag">
@@ -31,13 +31,14 @@
                 });
                 $().ready(() => {
                     $('.fav').on('click', event => {
+                        var $this = $(event.currentTarget)
                         $.ajax({
-                            url: '/api/v1/arigato/' + 1 + '/fav',
+                            url: '/api/v1/arigato/' + $this.data('id') + '/fav',
                             type: 'PUT',
-                            data:{check: true}
+                            data:{check: ! $this.hasClass('checked')}
                         }).done( (data) => {
-                            console.log(data.fav_counts);
-                            $(event.currentTarget).toggleClass('checked');
+                            $('.favCounts', $this.parent()).text(data.fav_counts)
+                            $this.toggleClass('checked');
                         }).fail( (data) => {
                             alert('error'); //TODO Fake It
                         })
