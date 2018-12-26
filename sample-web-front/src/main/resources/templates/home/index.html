@@ -26,6 +26,9 @@
                     th:name="${_csrf.parameterName}"
                     th:value="${_csrf.token}" />
             <script type="text/javascript">
+                $.ajaxSetup({
+                    headers: { 'X-XSRF-TOKEN': $('input[name="_csrf"]').val() }
+                });
                 $().ready(() => {
                     $('.fav').on('click', event => {
                         $.ajax({
