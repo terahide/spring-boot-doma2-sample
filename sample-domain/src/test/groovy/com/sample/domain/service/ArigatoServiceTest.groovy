@@ -26,6 +26,8 @@ class ArigatoServiceTest extends Specification {
     @Autowired
     Doma2TestHelper h
 
+    final static long mineId = 1
+
     def setup() {
         AuditInfoHolder.set "tes", LocalDateTime.now()
 
@@ -33,14 +35,8 @@ class ArigatoServiceTest extends Specification {
     }
 
     def "画像なしでありがとうを伝える"() {
-        given:
-        def arigato = new Arigato()
-        arigato.fromId = 1
-        arigato.toId = 1
-        arigato.subject = 'subject'
-        arigato.body = 'ありがと'
         when: "ありがとを伝える"
-        sut.say(arigato)
+        sut.say arigato()
         and: "ありがとを取得する"
         def page = sut.search(Pageable.NO_LIMIT)
         then:
@@ -51,14 +47,10 @@ class ArigatoServiceTest extends Specification {
 
     def "画像付きでありがとうを伝える"() {
         given:
-        def arigato = new Arigato()
-        arigato.fromId = 1
-        arigato.toId = 1
-        arigato.subject = 'subject'
-        arigato.body = 'ありがと'
+        def arigato = arigato()
         arigato.uploadFile.add toUploadFile('./src/test/resources/test.jpg')
         when: "ありがとを伝える"
-        sut.say(arigato)
+        sut.say arigato
         and: "ありがとを取得する"
         def page = sut.search(Pageable.NO_LIMIT)
         then:
@@ -78,5 +70,14 @@ class ArigatoServiceTest extends Specification {
         uploadFile.content = content
         uploadFile.contentType = MediaType.IMAGE_JPEG.toString()
         return uploadFile
+    }
+
+    def arigato(){
+        def arigato = new Arigato()
+        arigato.fromId = mineId
+        arigato.toId = 1
+        arigato.subject = 'subject'
+        arigato.body = 'ありがと'
+        return arigato
     }
 }
