@@ -10,12 +10,14 @@ import com.sample.domain.dto.arigato.Fav;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.dto.system.UploadFile;
+import com.sample.domain.exception.NoDataFoundException;
 import com.sample.domain.service.BaseRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.sample.domain.util.DomaUtils.createSelectOptions;
 import static java.util.stream.Collectors.toList;
@@ -68,5 +70,9 @@ public class ArigatoRepository extends BaseRepository {
 
     public void delete(Fav fav) {
         favDao.delete(fav);
+    }
+
+    public Optional<Fav> findFavBy(long arigatoId, long userId) {
+        return favDao.findFavBy(arigatoId, userId);
     }
 }

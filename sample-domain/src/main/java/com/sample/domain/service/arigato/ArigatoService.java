@@ -60,14 +60,11 @@ public class ArigatoService extends BaseTransactionalService {
     }
 
     public void releaseFav(long arigatoId, long userId) {
-        val fav = new Fav();
-        fav.setArigatoId(arigatoId);
-        fav.setUserId(userId);
-        arigatoRepository.delete(fav);
+        val fav = arigatoRepository.findFavBy(arigatoId, userId);
+        arigatoRepository.delete(fav.orElseThrow(() -> new NoDataFoundException(String.format("Favが見つかりませんでした。arigato_id=%d, user_id=%d", arigatoId, userId))));
     }
 
     public int countFav(long arigatoId) {
         return arigatoRepository.countFav(arigatoId);
     }
-
 }

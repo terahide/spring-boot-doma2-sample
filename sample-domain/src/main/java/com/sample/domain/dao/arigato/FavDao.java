@@ -7,6 +7,8 @@ import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.boot.ConfigAutowireable;
 
+import java.util.Optional;
+
 @ConfigAutowireable
 @Dao
 public interface FavDao {
@@ -18,4 +20,7 @@ public interface FavDao {
 
     @Select
     int countFav(long arigatoId);
+
+    @Select
+    Optional<Fav> findFavBy(long arigatoId, long userId);
 }
