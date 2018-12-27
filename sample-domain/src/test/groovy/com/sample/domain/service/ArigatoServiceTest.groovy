@@ -71,6 +71,12 @@ class ArigatoServiceTest extends Specification {
         def count = sut.countFav arigato.id
         then:
         count == 1
+        when: "いいねを解除する"
+        sut.releaseFav mineId, arigato.id
+        and: "いいねを取得する"
+        count = sut.countFav arigato.id
+        then:
+        count == 1
     }
 
     def toUploadFile(path){

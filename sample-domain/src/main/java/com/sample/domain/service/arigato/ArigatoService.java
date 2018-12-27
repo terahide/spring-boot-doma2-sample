@@ -59,7 +59,15 @@ public class ArigatoService extends BaseTransactionalService {
         arigatoRepository.create(fav);
     }
 
+    public void releaseFav(long arigatoId, long userId) {
+        val fav = new Fav();
+        fav.setArigatoId(arigatoId);
+        fav.setUserId(userId);
+        arigatoRepository.delete(fav);
+    }
+
     public int countFav(long arigatoId) {
         return arigatoRepository.countFav(arigatoId);
     }
+
 }

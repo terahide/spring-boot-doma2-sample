@@ -34,6 +34,8 @@ public class ArigatoRestController extends AbstractRestController {
 
         if(check) {
             arigatoService.fav(arigatoId, mineUserId);
+        }else{
+            arigatoService.releaseFav(arigatoId, mineUserId);
         }
 
         val favCounts = arigatoService.countFav(arigatoId);

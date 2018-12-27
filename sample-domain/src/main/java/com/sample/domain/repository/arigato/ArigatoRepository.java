@@ -65,4 +65,8 @@ public class ArigatoRepository extends BaseRepository {
     public int countFav(long arigatoId) {
         return favDao.countFav(arigatoId);
     }
+
+    public void delete(Fav fav) {
+        favDao.delete(fav);
+    }
 }

@@ -65,6 +65,14 @@ class WhenFavToArigatoSpec extends Specification{
                 .andReturn().response.contentAsString
         then:
         json.contains '"fav_counts":1'
+        when:
+        json = mvc.perform(put("/api/v1/arigato/${arigato.id}/fav")//TODO rest的にはdeleteが正しい気がする
+                .param('check', 'false')
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isOk())
+                .andReturn().response.contentAsString
+        then:
+        json.contains '"fav_counts":0'
     }
 
     def someone(email, lastName='yamada', firstName='hanako'){
