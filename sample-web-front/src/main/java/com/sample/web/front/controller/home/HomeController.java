@@ -4,6 +4,8 @@ import com.sample.domain.dto.arigato.Arigato;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.service.arigato.ArigatoService;
+import com.sample.web.base.util.WebSecurityUtils;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +38,8 @@ public class HomeController extends AbstractHtmlController {
      */
     @GetMapping
     public String index(Model model) {
-        Page<Arigato> page = arigatoService.search(Pageable.NO_LIMIT);//TODO Fake It
+        val mine = findUserBy(WebSecurityUtils.getLoginId());
+        Page<Arigato> page = arigatoService.search(Pageable.NO_LIMIT, mine.getId());//TODO Fake It
         model.addAttribute("page", page);
         return "home/index";
     }

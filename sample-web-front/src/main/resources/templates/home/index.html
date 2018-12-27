@@ -17,7 +17,7 @@
                 <div th:text="*{body}"></div>
                 <div th:if="*{hasImage()}" ><image width="300px" th:src="@{/arigato/image/__*{firstImageId}__}" /></div>
                 from <span><image th:if="*{from.hasImage()}" height="30px" th:src="@{/user/image/__*{from.id}__}" /><span th:text="*{from.name}"></span></span>
-                <div>★ いいね！<span class="favCounts">13</span>人 <a href="javascript:void(0)" th:data-id="*{id}" class="fav">いいね！</a></div>
+                <div>★ いいね！<span class="favCounts" th:text="*{favCounts}">13</span>人 <a href="javascript:void(0)" th:data-id="*{id}" th:class="*{'fav ' + (fav ? 'checked' : '')}">いいね！</a></div>
             </section>
         </div>
         <div layout:fragment="scripts" th:remove="tag">

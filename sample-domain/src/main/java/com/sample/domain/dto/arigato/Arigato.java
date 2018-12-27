@@ -48,6 +48,12 @@ public class Arigato extends DomaDtoImpl {
     @Transient
     User to;
 
+    @Transient
+    int favCounts;
+    @Transient
+    boolean fav;
+
+
     public boolean hasImage(){
         return ! uploadFileId.isEmpty();
     }

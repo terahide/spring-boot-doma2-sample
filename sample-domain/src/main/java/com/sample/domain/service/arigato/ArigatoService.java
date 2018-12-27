@@ -5,6 +5,7 @@ import com.sample.domain.dto.arigato.Fav;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.dto.system.UploadFile;
+import com.sample.domain.exception.NoDataFoundException;
 import com.sample.domain.repository.arigato.ArigatoRepository;
 import com.sample.domain.repository.system.UploadFileRepository;
 import com.sample.domain.repository.users.UserRepository;
@@ -31,10 +32,11 @@ public class ArigatoService extends BaseTransactionalService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Arigato> search(Pageable pageable) {
+    public Page<Arigato> search(Pageable pageable, long mineId) {
         val page = arigatoRepository.findBy(pageable);
         page.getData().stream().forEach(this::populateUser);
         page.getData().stream().forEach(this::populateImage);
+        page.getData().stream().forEach(a -> populateFav(a, mineId));
         return page;
     }
 
@@ -46,6 +48,10 @@ public class ArigatoService extends BaseTransactionalService {
     private void populateImage(Arigato arigato) {
         val images = arigatoRepository.findImageByArigatoId(arigato.getId());
         images.stream().forEach(i -> arigato.getUploadFileId().add(i.getId()));
+    }
+    private void populateFav(Arigato arigato, long mineId) {
+        arigato.setFavCounts(arigatoRepository.countFav(arigato.getId()));
+        arigato.setFav(arigatoRepository.findFavBy(arigato.getId(),mineId).isPresent());
     }
 
     public UploadFile getImage(long uploadFileId) {
