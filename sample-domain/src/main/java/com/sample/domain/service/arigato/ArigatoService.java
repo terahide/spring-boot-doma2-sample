@@ -50,4 +50,12 @@ public class ArigatoService extends BaseTransactionalService {
     public UploadFile getImage(long uploadFileId) {
         return uploadFileRepository.findById(uploadFileId);
     }
+
+    public void fav(long userId, long arigatoId) {
+
+    }
+
+    public int countFav(long arigatoId) {
+        return 1;
+    }
 }

@@ -61,6 +61,18 @@ class ArigatoServiceTest extends Specification {
         uploadFile.content.toBase64() != null
     }
 
+    def "ありがとうにいいねをする"(){
+        given: "ありがとを伝える"
+        def arigato = arigato()
+        sut.say arigato
+        when:
+        sut.fav mineId, arigato.id
+        and: "ありがとを取得する"
+        def count = sut.countFav arigato.id
+        then:
+        count == 1
+    }
+
     def toUploadFile(path){
         def file = new File(path)
         def content = BZip2Data.of(IOUtils.readFully(new FileInputStream(file), (int)file.length()))
