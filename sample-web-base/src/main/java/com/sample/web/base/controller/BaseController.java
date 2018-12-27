@@ -2,6 +2,11 @@ package com.sample.web.base.controller;
 
 import java.util.Locale;
 
+import com.sample.domain.dto.user.User;
+import com.sample.domain.dto.user.UserCriteria;
+import com.sample.domain.exception.NoDataFoundException;
+import com.sample.domain.service.users.UserService;
+import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -14,6 +19,9 @@ public class BaseController {
 
     @Autowired
     protected ApplicationContext applicationContext;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     protected ModelMapper modelMapper;
@@ -57,5 +65,11 @@ public class BaseController {
      */
     protected String getMessage(String key, Object[] args, Locale locale) {
         return MessageUtils.getMessage(key, args, locale);
+    }
+
+    protected User findUserBy(String email) {
+        val criteria = new UserCriteria();
+        criteria.setEmail(email);
+        return userService.findById(criteria).orElseThrow(() -> new NoDataFoundException("ユーザが見つかりません。email:"+email));
     }
 }

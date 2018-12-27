@@ -84,12 +84,6 @@ public class ArigatoController extends AbstractHtmlController {
         return "redirect:/";
     }
 
-    private User findUserBy(String email) {
-        val criteria = new UserCriteria();
-        criteria.setEmail(email);
-        return userService.findById(criteria).orElseThrow(() -> new NoDataFoundException("ユーザが見つかりません。email:"+email));
-    }
-
     @GetMapping("/image/{uploadFileId}")
     public ResponseEntity<byte[]> image(@PathVariable long uploadFileId) {
         val file = uploadFileService.getUploadFile(uploadFileId);

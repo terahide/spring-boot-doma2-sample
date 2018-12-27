@@ -45,12 +45,6 @@ public class ArigatoRestController extends AbstractRestController {
         return new ResponseEntity<>(new FavResult(arigatoId, favCounts), headers, HttpStatus.OK);
     }
 
-    private User findUserBy(String email) {
-        val criteria = new UserCriteria();
-        criteria.setEmail(email);
-        return userService.findById(criteria).orElseThrow(() -> new NoDataFoundException("ユーザが見つかりません。email:"+email));
-    }
-
     @Override
     public String getFunctionName() {
         return "F_API_Arigato";
