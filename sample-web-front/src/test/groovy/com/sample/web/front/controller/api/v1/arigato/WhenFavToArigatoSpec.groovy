@@ -64,7 +64,7 @@ class WhenFavToArigatoSpec extends Specification{
                 .andExpect(status().isOk())
                 .andReturn().response.contentAsString
         then:
-        json.contains '"fav_counts":0'
+        json.contains '"fav_counts":1'
     }
 
     def someone(email, lastName='yamada', firstName='hanako'){

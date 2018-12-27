@@ -65,9 +65,9 @@ class ArigatoServiceTest extends Specification {
         given: "ありがとを伝える"
         def arigato = arigato()
         sut.say arigato
-        when:
+        when: "いいねする"
         sut.fav mineId, arigato.id
-        and: "ありがとを取得する"
+        and: "いいねを取得する"
         def count = sut.countFav arigato.id
         then:
         count == 1
