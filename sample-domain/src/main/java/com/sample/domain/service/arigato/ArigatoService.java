@@ -1,6 +1,7 @@
 package com.sample.domain.service.arigato;
 
 import com.sample.domain.dto.arigato.Arigato;
+import com.sample.domain.dto.arigato.Fav;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.dto.system.UploadFile;
@@ -51,11 +52,14 @@ public class ArigatoService extends BaseTransactionalService {
         return uploadFileRepository.findById(uploadFileId);
     }
 
-    public void fav(long userId, long arigatoId) {
-
+    public void fav(long arigatoId, long userId) {
+        val fav = new Fav();
+        fav.setArigatoId(arigatoId);
+        fav.setUserId(userId);
+        arigatoRepository.create(fav);
     }
 
     public int countFav(long arigatoId) {
-        return 1;
+        return arigatoRepository.countFav(arigatoId);
     }
 }

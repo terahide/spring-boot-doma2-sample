@@ -2,9 +2,11 @@ package com.sample.domain.repository.arigato;
 
 import com.sample.domain.dao.arigato.ArigatoDao;
 import com.sample.domain.dao.arigato.ArigatoImageDao;
+import com.sample.domain.dao.arigato.FavDao;
 import com.sample.domain.dao.system.UploadFileDao;
 import com.sample.domain.dto.arigato.Arigato;
 import com.sample.domain.dto.arigato.ArigatoImage;
+import com.sample.domain.dto.arigato.Fav;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.dto.system.UploadFile;
@@ -30,6 +32,9 @@ public class ArigatoRepository extends BaseRepository {
     @Autowired
     ArigatoImageDao arigatoImageDao;
 
+    @Autowired
+    FavDao favDao;
+
     public void create(Arigato arigato) {
         arigatoDao.insert(arigato);
         arigato.getUploadFile().stream().forEach(u -> create(arigato.getId(), u));
@@ -53,4 +58,11 @@ public class ArigatoRepository extends BaseRepository {
         return arigatoImageDao.findByArigatoId(arigatoId);
     }
 
+    public void create(Fav fav) {
+        favDao.insert(fav);
+    }
+
+    public int countFav(long arigatoId) {
+        return favDao.countFav(arigatoId);
+    }
 }
