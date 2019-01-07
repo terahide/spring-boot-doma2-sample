@@ -8,7 +8,7 @@
         <!--/* この形式のコメントはHTMLソースから削除される */-->
         <div layout:fragment="content">
             <h2>Front Home</h2>
-            <a th:href="@{/arigato}" id="toArigato">ありがと</a>
+            <div><a th:href="@{/arigato}" id="toArigato" class="glyphicon glyphicon-heart">ありがと</a></div>
 
             <section class="arigato" th:each="arigato : ${page.data}" th:object="${arigato}">
                 <hr />
@@ -17,7 +17,8 @@
                 <div th:text="*{body}"></div>
                 <div th:if="*{hasImage()}" ><image width="300px" th:src="@{/arigato/image/__*{firstImageId}__}" /></div>
                 from <span><image th:if="*{from.hasImage()}" height="30px" th:src="@{/user/image/__*{from.id}__}" /><span th:text="*{from.name}"></span></span>
-                <div>★ いいね！<span class="favCounts" th:text="*{favCounts}">13</span>人 <a href="javascript:void(0)" th:data-id="*{id}" th:class="*{'fav ' + (fav ? 'checked' : '')}">いいね！</a></div>
+                <div class="glyphicon glyphicon-star">いいね！<span class="favCounts" th:text="*{favCounts}">13</span>人 <a href="javascript:void(0)" th:data-id="*{id}" th:class="*{'glyphicon fav ' + (fav ? 'checked glyphicon-thumbs-down' : 'glyphicon-thumbs-up')}">いいね！</a></div>
+                <div th:if="*{fromMe}"><a href="#" class="glyphicon glyphicon-pencil">編集</a>&nbsp;<a href="#" class="glyphicon glyphicon-trash">削除</a></div>
             </section>
         </div>
         <div layout:fragment="scripts" th:remove="tag">

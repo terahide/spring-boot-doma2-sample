@@ -7,10 +7,10 @@ import com.sample.domain.dao.system.UploadFileDao;
 import com.sample.domain.dto.arigato.Arigato;
 import com.sample.domain.dto.arigato.ArigatoImage;
 import com.sample.domain.dto.arigato.Fav;
+import com.sample.domain.dto.arigato.SearchCondition;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.dto.system.UploadFile;
-import com.sample.domain.exception.NoDataFoundException;
 import com.sample.domain.service.BaseRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +42,9 @@ public class ArigatoRepository extends BaseRepository {
         arigato.getUploadFile().stream().forEach(u -> create(arigato.getId(), u));
     }
 
-    public Page<Arigato> findBy(Pageable pageable) {
+    public Page<Arigato> findBy(Pageable pageable, SearchCondition condition) {
         val options = createSelectOptions(pageable).count();
-        val data = arigatoDao.findBy(options, toList());
+        val data = arigatoDao.findBy(condition, options, toList());
         return pageFactory.create(data, pageable, options.getCount());
     }
 

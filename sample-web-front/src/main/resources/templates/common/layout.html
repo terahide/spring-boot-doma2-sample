@@ -34,14 +34,9 @@
                 </div>
                 <div class="navbar-collapse collapse" id="main-navbar">
                     <ul class="nav navbar-nav navbar-right" th:style="${noMenu} ? 'visibility: hidden' : ''">
-                        <li th:replace="~{common/menuItem :: menuItem ('/', 'home', 'home page', 'home', 'Home')}">
-                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                            <span>Home</span>
-                        </li>
-                        <li th:replace="~{common/menuItem :: menuItem ('/logout', 'logout', '', 'log-out', 'Logout')}">
-                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
-                            <span>Logout</span>
-                        </li>
+                        <li th:replace="~{common/menuItem :: menuItem ('/', 'home', 'home page', 'home', 'Home')}" />
+                        <li th:replace="~{common/menuItem :: menuItem ('/account', 'account', 'my account', 'user', 'Account')}" />
+                        <li th:replace="~{common/menuItem :: menuItem ('/logout', 'logout', '', 'log-out', 'Logout')}" />
                     </ul>
                 </div>
             </div>

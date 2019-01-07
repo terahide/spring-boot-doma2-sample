@@ -2,6 +2,7 @@ package com.sample.domain.service.arigato;
 
 import com.sample.domain.dto.arigato.Arigato;
 import com.sample.domain.dto.arigato.Fav;
+import com.sample.domain.dto.arigato.SearchCondition;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.dto.system.UploadFile;
@@ -32,11 +33,16 @@ public class ArigatoService extends BaseTransactionalService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Arigato> search(Pageable pageable, long mineId) {
-        val page = arigatoRepository.findBy(pageable);
+    public Page<Arigato> search(Pageable pageable, SearchCondition condition) {
+        Assert.notNull(pageable,"pageable must be null");
+        Assert.notNull(condition,"condition must be null");
+        Assert.isTrue(condition.getMineId() != 0,"condition.mineId must be zero");
+
+        val page = arigatoRepository.findBy(pageable, condition);
         page.getData().stream().forEach(this::populateUser);
         page.getData().stream().forEach(this::populateImage);
-        page.getData().stream().forEach(a -> populateFav(a, mineId));
+        page.getData().stream().forEach(a -> populateFav(a, condition.getMineId()));
+        page.getData().stream().forEach(a -> populateMine(a, condition.getMineId()));
         return page;
     }
 
@@ -52,6 +58,11 @@ public class ArigatoService extends BaseTransactionalService {
     private void populateFav(Arigato arigato, long mineId) {
         arigato.setFavCounts(arigatoRepository.countFav(arigato.getId()));
         arigato.setFav(arigatoRepository.findFavBy(arigato.getId(),mineId).isPresent());
+    }
+
+    private void populateMine(Arigato arigato, long mineId) {
+        arigato.setFromMe(arigato.getFromId() == mineId);
+        arigato.setToMe(arigato.getToId() == mineId);
     }
 
     public UploadFile getImage(long uploadFileId) {
