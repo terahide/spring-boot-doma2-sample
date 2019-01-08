@@ -5,15 +5,22 @@ import com.sample.domain.dto.arigato.SearchCondition;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.service.arigato.ArigatoService;
+import com.sample.domain.service.users.UserService;
 import com.sample.web.base.controller.html.AbstractHtmlController;
 import com.sample.web.base.util.WebSecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static com.sample.web.base.WebConst.GLOBAL_MESSAGE;
 
 @Controller
 @RequestMapping(path = "/account")
@@ -25,6 +32,24 @@ public class AccountController extends AbstractHtmlController {
     }
     @Autowired
     ArigatoService arigatoService;
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    PasswordFormValidator passwordFormValidator;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @ModelAttribute("passwordForm")
+    public PasswordForm passwordForm() {
+        return new PasswordForm();
+    }
+
+    @InitBinder("passwordForm")
+    public void validatorBinder(WebDataBinder binder) {
+        binder.addValidators(passwordFormValidator);
+    }
 
     /**
      * 初期表示
@@ -51,8 +76,23 @@ public class AccountController extends AbstractHtmlController {
     }
 
     @GetMapping("/password")
-    public String showPasswordForm(Model model) {
-        model.addAttribute("passwordForm", new PasswordForm());
+    public String showPasswordForm(@ModelAttribute("passwordForm") PasswordForm form, Model model) {
         return "account/password";
+    }
+
+    @PostMapping("/password")
+    public String changePassword(@Validated  @ModelAttribute("passwordForm") PasswordForm form, BindingResult br, RedirectAttributes attributes) {
+        // 入力チェックエラーがある場合は、元の画面にもどる
+        if (br.hasErrors()) {
+            setFlashAttributeErrors(attributes, br);
+            return "redirect:/account/password";
+        }
+
+        val me = findMe();
+        me.setPassword(passwordEncoder.encode(form.getPasswordNew()));
+        userService.update(me);
+
+        attributes.addFlashAttribute(GLOBAL_MESSAGE, getMessage("password.changed"));
+        return "redirect:/account";
     }
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 @Setter
 @Getter
@@ -15,10 +16,12 @@ public class PasswordForm extends BaseForm {
     @NotEmpty
     String password;
     @NotEmpty
-    @Length(min=8)
-    //TODO 半角の英文字と数字と大文字小文字をまぜる
+    @Length(min=8, max=20)
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!#&\\\\@?\\-=\\*\\+]*$", message = "{validator.password.pattern.message}")
     String passwordNew;
     @NotEmpty
+    @Length(min=8, max=20)
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9!#&\\\\@?\\-=\\*\\+]*$", message = "{validator.password.pattern.message}")
     String passwordConfirm;
 
     @Override
