@@ -2,6 +2,8 @@ package com.sample.web.base.controller.html;
 
 import static com.sample.web.base.WebConst.MAV_ERRORS;
 
+import com.sample.domain.dto.user.User;
+import com.sample.web.base.util.WebSecurityUtils;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
@@ -53,5 +55,9 @@ public abstract class AbstractHtmlController extends BaseController implements F
      */
     public void setFlashAttributeErrors(RedirectAttributes attributes, BindingResult result) {
         attributes.addFlashAttribute(MAV_ERRORS, result);
+    }
+
+    protected User findMe(){
+        return findUserBy(WebSecurityUtils.getLoginId());
     }
 }

@@ -68,9 +68,8 @@ public class ArigatoController extends AbstractHtmlController {
             return "redirect:/arigato";
         }
 
-        String fromEmail = WebSecurityUtils.getLoginId();
         val arigato = modelMapper.map(form, Arigato.class);
-        arigato.setFromId(findUserBy(fromEmail).getId());
+        arigato.setFromId(findMe().getId());
 
         val image = form.getImage();
         if (image != null && !image.isEmpty()) {

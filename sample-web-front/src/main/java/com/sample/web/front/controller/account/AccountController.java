@@ -33,7 +33,7 @@ public class AccountController extends AbstractHtmlController {
      */
     @GetMapping
     public String index(Model model) {
-        val mine = findUserBy(WebSecurityUtils.getLoginId());
+        val mine = findMe();
         SearchCondition condition = new SearchCondition(SearchCondition.Mode.FROM_ME, mine.getId());
         Page<Arigato> page = arigatoService.search(Pageable.NO_LIMIT, condition);//TODO Paging
         model.addAttribute("page_from", page);

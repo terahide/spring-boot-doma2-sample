@@ -37,7 +37,7 @@ public class HomeController extends AbstractHtmlController {
      */
     @GetMapping
     public String index(Model model) {
-        val mine = findUserBy(WebSecurityUtils.getLoginId());
+        val mine = findMe();
         val condition = new SearchCondition(SearchCondition.Mode.ALL, mine.getId());
         Page<Arigato> page = arigatoService.search(Pageable.NO_LIMIT, condition);//TODO Paging
         model.addAttribute("page", page);
