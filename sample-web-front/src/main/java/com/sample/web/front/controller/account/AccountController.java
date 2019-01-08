@@ -43,4 +43,16 @@ public class AccountController extends AbstractHtmlController {
         model.addAttribute("page_to", page);
         return "account/index";
     }
+
+    @GetMapping("/profile")
+    public String showProfile(Model model) {
+        //TODO 実装してね
+        return "account/profile";
+    }
+
+    @GetMapping("/password")
+    public String showPasswordForm(Model model) {
+        model.addAttribute("passwordForm", new PasswordForm());
+        return "account/password";
+    }
 }
