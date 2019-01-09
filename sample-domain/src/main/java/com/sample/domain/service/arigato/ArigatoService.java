@@ -39,10 +39,7 @@ public class ArigatoService extends BaseTransactionalService {
         Assert.isTrue(condition.getMineId() != 0,"condition.mineId must be zero");
 
         val page = arigatoRepository.findBy(pageable, condition);
-        page.getData().stream().forEach(this::populateUser);
-        page.getData().stream().forEach(this::populateImage);
-        page.getData().stream().forEach(a -> populateFav(a, condition.getMineId()));
-        page.getData().stream().forEach(a -> populateMine(a, condition.getMineId()));
+        page.getData().stream().forEach(a -> populateMetaInfo(a, condition.getMineId()));
         return page;
     }
 
@@ -83,5 +80,11 @@ public class ArigatoService extends BaseTransactionalService {
 
     public int countFav(long arigatoId) {
         return arigatoRepository.countFav(arigatoId);
+    }
+    private void populateMetaInfo(Arigato arigato, long mineId){
+        populateUser(arigato);
+        populateImage(arigato);
+        populateFav(arigato, mineId);
+        populateMine(arigato, mineId);
     }
 }
