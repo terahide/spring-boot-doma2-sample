@@ -42,6 +42,9 @@ public class Arigato extends DomaDtoImpl {
     @Transient // Domaで永続化しない
     @JsonIgnore
     List<UploadFile> uploadFile;
+    @Transient // Domaで永続化しない
+    @JsonIgnore
+    List<Long> prevUploadFileId;
 
     @Transient
     User from;
@@ -77,6 +80,7 @@ public class Arigato extends DomaDtoImpl {
     public Arigato() {
         super();
         this.uploadFile = new ArrayList<>();
+        this.prevUploadFileId = new ArrayList<>();
         this.uploadFileId = new ArrayList<>();
     }
 }

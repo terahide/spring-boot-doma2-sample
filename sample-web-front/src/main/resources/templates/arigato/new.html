@@ -8,7 +8,7 @@
 <!--/* この形式のコメントはHTMLソースから削除される */-->
 <div layout:fragment="content">
     <h2>感謝の気持ちを伝えよう</h2>
-    <form th:object="${arigatoForm}" th:action="@{/arigato}" method="post" id="arigatoForm"
+    <form th:object="${arigatoForm}" th:action="@{/arigato__${arigato == null ? '' : '/' + arigato.id}__}" method="post" id="arigatoForm"
           enctype="multipart/form-data" >
         <div class="box-body">
             <select th:replace="~{common/selectField :: select ('誰に？', 'toId', ${users})}" />
@@ -17,13 +17,25 @@
             <input th:replace="~{common/inputField :: input ('file', '添付画像', 'image')}" />
         </div>
 
+        <div id="imageContainer"><div th:if="${arigato?.hasImage()}" ><image width="300px" th:src="@{/arigato/image/__${arigato.firstImageId}__}" /></div></div>
+
         <div class="box-footer">
             <button class="btn btn-default bg-purple" type="submit">
                 ありがと
             </button>
         </div>
 
+        <input type="hidden" th:field="*{version}" />
     </form>
 </div>
+<div layout:fragment="scripts" th:remove="tag">
+    <script type="text/javascript">
+        $().ready(() => {
+            $('input[name="image"]').on('change', event => {
+                $('#imageContainer').hide();
+            });
+        });
+    </script>
+</div>>
 </body>
 </html>

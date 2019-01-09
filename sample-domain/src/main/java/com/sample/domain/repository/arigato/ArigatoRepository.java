@@ -11,6 +11,7 @@ import com.sample.domain.dto.arigato.SearchCondition;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.dto.system.UploadFile;
+import com.sample.domain.exception.NoDataFoundException;
 import com.sample.domain.service.BaseRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,21 @@ public class ArigatoRepository extends BaseRepository {
         arigato.getUploadFile().stream().forEach(u -> create(arigato.getId(), u));
     }
 
+    public void update(Arigato arigato) {
+        arigatoDao.update(arigato);
+        arigato.getPrevUploadFileId().stream().forEach(i -> findImageById(i).ifPresent(u -> delete(arigato.getId(), u))); //TODO 複数イメージアップのときに直してね
+        arigato.getUploadFile().stream().forEach(u -> create(arigato.getId(), u));
+    }
+
     public Page<Arigato> findBy(Pageable pageable, SearchCondition condition) {
         val options = createSelectOptions(pageable).count();
         val data = arigatoDao.findBy(condition, options, toList());
         return pageFactory.create(data, pageable, options.getCount());
+    }
+
+    public Arigato findById(long arigatoId) {
+        return arigatoDao.findById(arigatoId)
+            .orElseThrow(() -> new NoDataFoundException(String.format("ありがとが見つかりませんでした id=%d", arigatoId)));
     }
 
     public void create(long arigatoId, UploadFile uploadFile) {
@@ -56,9 +68,19 @@ public class ArigatoRepository extends BaseRepository {
         arigatoImageDao.insert(image);
     }
 
+    public void delete(long arigatoId, UploadFile uploadFile) {
+        arigatoImageDao.delete(arigatoId, uploadFile.getId());
+        uploadFileDao.delete(uploadFile);
+    }
+
     public List<UploadFile> findImageByArigatoId(long arigatoId) {
         return arigatoImageDao.findByArigatoId(arigatoId);
     }
+
+    private Optional<UploadFile> findImageById(long id) {
+        return arigatoImageDao.findById(id);
+    }
+
 
     public void create(Fav fav) {
         favDao.insert(fav);
@@ -75,4 +97,5 @@ public class ArigatoRepository extends BaseRepository {
     public Optional<Fav> findFavBy(long arigatoId, long userId) {
         return favDao.findFavBy(arigatoId, userId);
     }
+
 }

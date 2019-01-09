@@ -31,6 +31,10 @@ public class ArigatoService extends BaseTransactionalService {
         Assert.notNull(arigato,"arigato must not be null");
         arigatoRepository.create(arigato);
     }
+    public void update(Arigato arigato) {
+        Assert.notNull(arigato,"arigato must not be null");
+        arigatoRepository.update(arigato);
+    }
 
     @Transactional(readOnly = true)
     public Page<Arigato> search(Pageable pageable, SearchCondition condition) {
@@ -62,6 +66,7 @@ public class ArigatoService extends BaseTransactionalService {
         arigato.setToMe(arigato.getToId() == mineId);
     }
 
+    @Transactional(readOnly = true)
     public UploadFile getImage(long uploadFileId) {
         return uploadFileRepository.findById(uploadFileId);
     }
@@ -81,6 +86,17 @@ public class ArigatoService extends BaseTransactionalService {
     public int countFav(long arigatoId) {
         return arigatoRepository.countFav(arigatoId);
     }
+
+    @Transactional(readOnly = true)
+    public Arigato getMine(long mineId, long arigatoId) {
+        val arigato = arigatoRepository.findById(arigatoId);
+        if( arigato.getFromId() != mineId ){
+            //TODO 403
+        }
+        populateMetaInfo(arigato, mineId);
+        return arigato;
+    }
+
     private void populateMetaInfo(Arigato arigato, long mineId){
         populateUser(arigato);
         populateImage(arigato);

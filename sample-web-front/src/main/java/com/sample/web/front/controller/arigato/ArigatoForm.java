@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 public class ArigatoForm extends BaseForm {
     private static final long serialVersionUID = 6867085450325771381L;
 
+    Long id;
+
     @NotNull
     Long toId;
     @NotEmpty
@@ -25,9 +27,4 @@ public class ArigatoForm extends BaseForm {
     // 添付ファイル
     @ContentType(allowed = { MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE })
     transient MultipartFile image; // serializableではないのでtransientにする
-
-    @Override
-    public Long getId() {
-        return null;
-    }
 }

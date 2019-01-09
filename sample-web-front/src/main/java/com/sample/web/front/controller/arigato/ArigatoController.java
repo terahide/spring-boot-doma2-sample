@@ -83,6 +83,47 @@ public class ArigatoController extends AbstractHtmlController {
         return "redirect:/";
     }
 
+    @GetMapping("/{id}")
+    public String edit(@PathVariable long id, Model model){
+        val me = findMe();
+        val arigato = arigatoService.getMine(me.getId(), id);
+        val form = modelMapper.map(arigato, ArigatoForm.class);
+
+        val criteria = new UserCriteria();
+        val users = userService.findAll(criteria, Pageable.NO_LIMIT);
+        model.addAttribute("users", users.getData());
+        model.addAttribute("arigato", arigato);
+        model.addAttribute("arigatoForm", form);
+        return "arigato/new";
+    }
+
+
+    @PostMapping("/{id}")
+    public String update(@Validated @ModelAttribute("arigatoForm")  ArigatoForm form, BindingResult br, RedirectAttributes attributes){
+        if(br.hasErrors()){
+            setFlashAttributeErrors(attributes, br);
+            return "redirect:/arigato/" + form.getId();
+        }
+
+        val me = findMe();
+
+        val arigato = arigatoService.getMine(me.getId(), form.getId());
+        modelMapper.map(form, arigato);
+
+        val image = form.getImage();
+        if (image != null && !image.isEmpty()) {
+            arigato.getPrevUploadFileId().addAll(arigato.getUploadFileId());
+            val uploadFile = new UploadFile();
+            MultipartFileUtils.convert(image, uploadFile);
+            arigato.getUploadFile().clear();
+            arigato.getUploadFile().add(uploadFile);
+        }
+
+        arigatoService.update(arigato);
+
+        return "redirect:/";
+    }
+
     @GetMapping("/image/{uploadFileId}")
     public ResponseEntity<byte[]> image(@PathVariable long uploadFileId) {
         val file = uploadFileService.getUploadFile(uploadFileId);
