@@ -18,6 +18,9 @@ public interface ArigatoDao {
     @Update
     int update(Arigato arigato);
 
+    @Delete
+    int delete(Arigato arigato);
+
     @Select(strategy = SelectType.COLLECT)
     <R> R findBy(final SearchCondition condition, final SelectOptions options, final Collector<Arigato, ?, R> collector);
 

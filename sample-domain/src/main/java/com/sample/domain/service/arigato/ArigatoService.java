@@ -31,9 +31,22 @@ public class ArigatoService extends BaseTransactionalService {
         Assert.notNull(arigato,"arigato must not be null");
         arigatoRepository.create(arigato);
     }
+
     public void update(Arigato arigato) {
         Assert.notNull(arigato,"arigato must not be null");
         arigatoRepository.update(arigato);
+    }
+
+    public void delete(long mineId, long arigatoId) {
+        Assert.isTrue(mineId != 0,"mineId must be zero");
+        Assert.isTrue(arigatoId != 0,"arigatoId must be zero");
+        try {
+            val arigato = getMine(mineId, arigatoId);
+            arigatoRepository.delete(arigato);
+        }catch(NoDataFoundException e){
+            //成功あつかい
+        }
+
     }
 
     @Transactional(readOnly = true)

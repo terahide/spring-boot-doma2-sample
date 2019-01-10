@@ -49,6 +49,11 @@ public class ArigatoRepository extends BaseRepository {
         arigato.getUploadFile().stream().forEach(u -> create(arigato.getId(), u));
     }
 
+    public void delete(Arigato arigato) {
+        arigato.getPrevUploadFileId().stream().forEach(i -> findImageById(i).ifPresent(u -> delete(arigato.getId(), u))); //TODO 複数イメージアップのときに直してね
+        arigatoDao.delete(arigato);
+    }
+
     public Page<Arigato> findBy(Pageable pageable, SearchCondition condition) {
         val options = createSelectOptions(pageable).count();
         val data = arigatoDao.findBy(condition, options, toList());
@@ -69,6 +74,7 @@ public class ArigatoRepository extends BaseRepository {
     }
 
     public void delete(long arigatoId, UploadFile uploadFile) {
+        //TODO delete fav
         arigatoImageDao.delete(arigatoId, uploadFile.getId());
         uploadFileDao.delete(uploadFile);
     }

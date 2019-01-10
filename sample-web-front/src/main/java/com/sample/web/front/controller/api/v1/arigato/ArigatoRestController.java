@@ -28,9 +28,8 @@ public class ArigatoRestController extends AbstractRestController {
 
     @PutMapping("/{arigatoId}/fav")
     public ResponseEntity<FavResult> fav(@PathVariable long arigatoId,
-                                 @RequestParam(required = true) boolean check){
-        String fromEmail = WebSecurityUtils.getLoginId();
-        val mineUserId = findUserBy(fromEmail).getId();
+                                 @RequestParam(required = true) boolean check){//TODO checkではなくて、putとdeleteで
+        val mineUserId = findMe().getId();
 
         if(check) {
             arigatoService.fav(arigatoId, mineUserId);
@@ -45,8 +44,21 @@ public class ArigatoRestController extends AbstractRestController {
         return new ResponseEntity<>(new FavResult(arigatoId, favCounts), headers, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{arigatoId}")
+    public ResponseEntity<String> delete(@PathVariable long arigatoId){
+        arigatoService.delete(findMe().getId(), arigatoId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>("", headers, HttpStatus.NO_CONTENT);
+    }
+
     @Override
     public String getFunctionName() {
         return "F_API_Arigato";
+    }
+
+    protected User findMe(){ //TODO 共通化したい
+        return findUserBy(WebSecurityUtils.getLoginId());
     }
 }
