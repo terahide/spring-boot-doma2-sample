@@ -17,7 +17,8 @@
             <input th:replace="~{common/inputField :: input ('file', '添付画像', 'image')}" />
         </div>
 
-        <div id="imageContainer"><div th:if="${arigato?.hasImage()}" ><image width="300px" th:src="@{/arigato/__${arigato.id}__/image/__${arigato.firstImageId}__}" /></div></div>
+        <div id="imageContainer"><div th:if="${arigato?.hasImage()}" ><image width="300px" th:src="@{/arigato/__${arigato.id}__/image/__${arigato.firstImageId}__}" /><a href="javascript:void(0)" class="deleteImage glyphicon glyphicon-trash" th:data-arigato-id="${arigato.id}" th:data-id="${arigato.firstImageId}">画像を削除</a></div></div>
+
         <div class="box-footer">
             <button class="btn btn-default bg-purple" type="submit">
                 ありがと
@@ -28,10 +29,28 @@
     </form>
 </div>
 <div layout:fragment="scripts" th:remove="tag">
+    <input
+            type="hidden"
+            th:name="${_csrf.parameterName}"
+            th:value="${_csrf.token}" />
     <script type="text/javascript">
+        $.ajaxSetup({
+            headers: { 'X-XSRF-TOKEN': $('input[name="_csrf"]').val() }
+        });
         $().ready(() => {
             $('input[name="image"]').on('change', event => {
                 $('#imageContainer').hide();
+            });
+            $('.deleteImage').on('click', event => {
+                var $this = $(event.currentTarget);
+                $.ajax({
+                    url: '/api/v1/arigato/' + $this.data('arigato-id') + '/image/' + $this.data('id'),
+                    type: 'DELETE'
+                }).done( (data) => {
+                    $this.parent().remove()
+                }).fail( (data) => {
+                    alert('error'); //TODO Fake It
+                })
             });
         });
     </script>

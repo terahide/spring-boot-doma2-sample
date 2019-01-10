@@ -49,6 +49,21 @@ public class ArigatoService extends BaseTransactionalService {
 
     }
 
+    public void deleteImage(Long mineId, long arigatoId, long uploadFileId) {
+        Assert.isTrue(mineId != 0,"mineId must be zero");
+        Assert.isTrue(arigatoId != 0,"arigatoId must be zero");
+        Assert.isTrue(uploadFileId != 0,"uploadFileId must be zero");
+
+        //TODO ありがとの画像かどうかのバリデーション
+
+        try{
+            val uploadFile = uploadFileRepository.findById(uploadFileId);
+            arigatoRepository.delete(arigatoId, uploadFile);
+        }catch(NoDataFoundException e){
+            //成功あつかい
+        }
+    }
+
     @Transactional(readOnly = true)
     public Page<Arigato> search(Pageable pageable, SearchCondition condition) {
         Assert.notNull(pageable,"pageable must be null");

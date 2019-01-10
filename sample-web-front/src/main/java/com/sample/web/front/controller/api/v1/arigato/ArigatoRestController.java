@@ -53,6 +53,15 @@ public class ArigatoRestController extends AbstractRestController {
         return new ResponseEntity<>("", headers, HttpStatus.NO_CONTENT);
     }
 
+    @DeleteMapping("/{arigatoId}/image/{id}")
+    public ResponseEntity<String> deleteImage(@PathVariable long arigatoId, @PathVariable long id){
+        arigatoService.deleteImage(findMe().getId(), arigatoId, id);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>("", headers, HttpStatus.NO_CONTENT);
+    }
+
     @Override
     public String getFunctionName() {
         return "F_API_Arigato";

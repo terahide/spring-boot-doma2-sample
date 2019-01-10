@@ -85,6 +85,9 @@ public class ArigatoController extends AbstractHtmlController {
 
     @GetMapping("/{id}")
     public String edit(@PathVariable long id, Model model){
+
+        //TODO 自分のじゃなかったら 403
+        
         val me = findMe();
         val arigato = arigatoService.getMine(me.getId(), id);
         val form = modelMapper.map(arigato, ArigatoForm.class);

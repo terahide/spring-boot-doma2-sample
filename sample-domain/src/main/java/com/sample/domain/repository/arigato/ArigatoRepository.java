@@ -83,7 +83,7 @@ public class ArigatoRepository extends BaseRepository {
         return arigatoImageDao.findByArigatoId(arigatoId);
     }
 
-    private Optional<UploadFile> findImageById(long id) {
+    public Optional<UploadFile> findImageById(long id) {
         return arigatoImageDao.findById(id);
     }
 
