@@ -17,7 +17,7 @@
             to <span><image th:if="*{to.hasImage()}" height="30px" th:src="@{/user/image/__*{to.id}__}" /><span th:text="*{to.name}"></span></span>
             <div th:text="*{subject}" class="subject"></div>
             <div th:text="*{body}"></div>
-            <div th:if="*{hasImage()}" ><image width="300px" th:src="@{/arigato/image/__*{firstImageId}__}" /></div>
+            <div th:if="*{hasImage()}" ><image width="300px" th:src="@{/arigato/__*{id}__/image/__*{firstImageId}__}" /></div>
             from <span><image th:if="*{from.hasImage()}" height="30px" th:src="@{/user/image/__*{from.id}__}" /><span th:text="*{from.name}"></span></span>
             <div class="glyphicon glyphicon-star">いいね！<span class="favCounts" th:text="*{favCounts}">13</span>人 <a href="javascript:void(0)" th:data-id="*{id}" th:class="*{'glyphicon fav ' + (fav ? 'checked glyphicon-thumbs-down' : 'glyphicon-thumbs-up')}">いいね！</a></div>
             <div th:if="*{fromMe}"><a th:href="@{/arigato/__*{id}__}" class="glyphicon glyphicon-pencil">編集</a>&nbsp;<a href="javascript:void(0)" class="delete glyphicon glyphicon-trash" th:data-id="*{id}">削除</a></div>

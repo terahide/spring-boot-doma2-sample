@@ -124,8 +124,9 @@ public class ArigatoController extends AbstractHtmlController {
         return "redirect:/";
     }
 
-    @GetMapping("/image/{uploadFileId}")
-    public ResponseEntity<byte[]> image(@PathVariable long uploadFileId) {
+    @GetMapping("/{id}/image/{uploadFileId}")
+    public ResponseEntity<byte[]> image(@PathVariable long id, @PathVariable long uploadFileId) {
+        //TODO arigatoIdとぶつけて違ったら 404
         val file = uploadFileService.getUploadFile(uploadFileId);
 
         byte[] body = Base64.decodeBase64(file.getContent().toBase64());

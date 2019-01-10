@@ -17,8 +17,7 @@
             <input th:replace="~{common/inputField :: input ('file', '添付画像', 'image')}" />
         </div>
 
-        <div id="imageContainer"><div th:if="${arigato?.hasImage()}" ><image width="300px" th:src="@{/arigato/image/__${arigato.firstImageId}__}" /></div></div>
-
+        <div id="imageContainer"><div th:if="${arigato?.hasImage()}" ><image width="300px" th:src="@{/arigato/__${arigato.id}__/image/__${arigato.firstImageId}__}" /></div></div>
         <div class="box-footer">
             <button class="btn btn-default bg-purple" type="submit">
                 ありがと
