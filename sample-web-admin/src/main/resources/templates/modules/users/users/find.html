@@ -73,7 +73,10 @@
                                 <td>
                                     <a th:href="@{/users/users/show/__${user.id}__}" th:text="${user.id}" />
                                 </td>
-                                <td th:text="${user.lastName + ' ' + user.firstName}" />
+                                <td>
+                                    <image width="50px" th:if="${user.hasImage()}" th:src="@{/users/users/__${user.id}__/image}" />
+                                    <span th:text="${user.lastName + ' ' + user.firstName}" />
+                                </td>
                                 <td th:text="${user.email}" />
                                 <td th:text="${user.tel}" />
                             </tr>

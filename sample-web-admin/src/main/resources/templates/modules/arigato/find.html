@@ -64,17 +64,17 @@
                     <td th:text="*{id}" />
                     <td th:text="*{favCounts}" />
                     <td>
-                        <image th:if="*{from.hasImage()}" height="30px" th:src="@{/user/__*{from.id}__/image}" />
+                        <image th:if="*{from.hasImage()}" height="30px" th:src="@{/users/users/__*{from.id}__/image}" />
                         <span th:text="*{from.name}" />
                     </td>
                     <td>
-                        <image th:if="*{to.hasImage()}" height="30px" th:src="@{/user/__*{to.id}__/image}" />
+                        <image th:if="*{to.hasImage()}" height="30px" th:src="@{/users/users/__*{to.id}__/image}" />
                         <span th:text="*{to.name}" />
                     </td>
                     <td th:text="*{subject}" />
                     <td th:text="*{body}" />
                     <td>
-                        <a th:if="*{hasImage()}" th:href="@{/arigato/__*{id}__/image/__*{firstImageId}__}" target="_brank"><image width="150px" th:src="@{/arigato/__*{id}__/image/__*{firstImageId}__}" /></a>
+                        <a th:if="*{hasImage()}" th:href="@{/arigato/__*{id}__/image/__*{firstImageId}__}" target="_brank"><image width="50px" th:src="@{/arigato/__*{id}__/image/__*{firstImageId}__}" /></a>
                     </td>
                     <td th:text="*{createdAt}" />
                     <td>

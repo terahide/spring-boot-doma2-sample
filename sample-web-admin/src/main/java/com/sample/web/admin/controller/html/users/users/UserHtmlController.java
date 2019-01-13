@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
  * ユーザー管理
  */
 @Controller
-@RequestMapping("/users/users")
+@RequestMapping("/users/users") //TODO REST的には /user だねー
 @SessionAttributes(types = { SearchUserForm.class, UserForm.class })
 @Slf4j
 public class UserHtmlController extends AbstractHtmlController {
@@ -181,17 +181,6 @@ public class UserHtmlController extends AbstractHtmlController {
         // 1件取得する
         val user = userService.findById(userId);
         model.addAttribute("user", user);
-
-        if (user.getUploadFile() != null) {
-            // 添付ファイルを取得する
-            val uploadFile = user.getUploadFile();
-
-            // Base64デコードして解凍する
-            val base64data = uploadFile.getContent().toBase64();
-            val sb = new StringBuilder().append("data:image/png;base64,").append(base64data);
-
-            model.addAttribute("image", sb.toString());
-        }
 
         return "modules/users/users/show";
     }
