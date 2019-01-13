@@ -87,34 +87,33 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th class="fa fa-start-o">いいね！</th>
-                    <th>ありがとした人</th>
-                    <th>ありがとされた人</th>
-                    <th>件名</th>
+                    <th>だれ？</th>
                     <th>内容</th>
-                    <th>イメージ</th>
-                    <th>ありがとした日</th>
                     <th class="fa fa-trash">削除</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="arigato: ${page.data}" th:object="${arigato}">
                     <td th:text="*{id}" />
-                    <td th:text="*{favCounts}" />
+
                     <td>
-                        <image th:if="*{from.hasImage()}" height="30px" th:src="@{/users/users/__*{from.id}__/image}" />
-                        <span th:text="*{from.name}" />
+                        <span th:text="*{#temporals.format(createdAt, 'yyyy/MM/dd HH:mm:ss')}" />
+                        <br />
+                        &nbsp;<image th:if="*{from.hasImage()}" height="30px" th:src="@{/users/users/__*{from.id}__/image}" />
+                        <span th:text="*{from.name}" /> から
+                        <br />
+                        &nbsp;<image th:if="*{to.hasImage()}" height="30px" th:src="@{/users/users/__*{to.id}__/image}" />
+                        <span th:text="*{to.name}" /> へ
                     </td>
                     <td>
-                        <image th:if="*{to.hasImage()}" height="30px" th:src="@{/users/users/__*{to.id}__/image}" />
-                        <span th:text="*{to.name}" />
-                    </td>
-                    <td th:text="*{subject}" />
-                    <td th:text="*{body}" />
-                    <td>
+                        <span th:text="*{subject}" />
+                        <br />
+                        <span th:text="*{body}" />
+                        ★<span th:text="*{favCounts}" />
+                        <br>
                         <a th:if="*{hasImage()}" th:href="@{/arigato/__*{id}__/image/__*{firstImageId}__}" target="_brank"><image width="50px" th:src="@{/arigato/__*{id}__/image/__*{firstImageId}__}" /></a>
                     </td>
-                    <td th:text="*{createdAt}" />
+
                     <td>
                         <button>削除</button>
                     </td>
