@@ -336,7 +336,7 @@ public class UserHtmlController extends AbstractHtmlController {
         return new ModelAndView(view);
     }
 
-    @GetMapping("/image/{userId}")
+    @GetMapping("/{userId}/image")
     public ResponseEntity<byte[]> image(@PathVariable long userId) {
         val user = userService.findById(userId);
         val file = uploadFileService.getUploadFile(user.getUploadFileId());

@@ -26,7 +26,7 @@ public class UserController {
     @Autowired
     UploadFileService uploadFileService;
 
-    @GetMapping("/image/{userId}")
+    @GetMapping("/{userId}/image")
     public ResponseEntity<byte[]> image(@PathVariable long userId) {
         val user = userService.findById(userId);
         val file = uploadFileService.getUploadFile(user.getUploadFileId());

@@ -64,11 +64,11 @@
                     <td th:text="*{id}" />
                     <td th:text="*{favCounts}" />
                     <td>
-                        <image th:if="*{from.hasImage()}" height="30px" th:src="@{/user/image/__*{from.id}__}" />
+                        <image th:if="*{from.hasImage()}" height="30px" th:src="@{/user/__*{from.id}__/image}" />
                         <span th:text="*{from.name}" />
                     </td>
                     <td>
-                        <image th:if="*{to.hasImage()}" height="30px" th:src="@{/user/image/__*{to.id}__}" />
+                        <image th:if="*{to.hasImage()}" height="30px" th:src="@{/user/__*{to.id}__/image}" />
                         <span th:text="*{to.name}" />
                     </td>
                     <td th:text="*{subject}" />

@@ -44,7 +44,7 @@
                         <tr>
                             <th>添付画像</th>
                             <td>
-                                <img width="300px" th:if="*{uploadFileId != null}" th:src="@{/users/users/image/__*{id}__}" />
+                                <image width="300px" th:if="*{hasImage()}" th:src="@{/users/users/__*{id}__/image}" />
                             </td>
                         </tr>
 
