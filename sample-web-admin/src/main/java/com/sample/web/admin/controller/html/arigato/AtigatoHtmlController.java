@@ -30,7 +30,7 @@ public class AtigatoHtmlController extends AbstractHtmlController {
     @Autowired
     UploadFileService uploadFileService;
     @GetMapping
-    public String index(Model model){
+    public String index(@ModelAttribute SearchArigatoForm form, Model model){
         val condition = new AdminSearchCondition();
         val page = arigatoService.search(Pageable.DEFAULT, condition);
         model.addAttribute("page", page);
