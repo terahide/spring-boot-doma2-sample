@@ -1,8 +1,6 @@
 package com.sample.web.admin.controller.html.arigato;
 
 import com.sample.domain.dto.arigato.AdminSearchCondition;
-import com.sample.domain.dto.arigato.SearchCondition;
-import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.service.arigato.ArigatoService;
 import com.sample.domain.service.system.UploadFileService;
 import com.sample.web.base.controller.html.AbstractHtmlController;
@@ -16,9 +14,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/arigato")
@@ -29,17 +33,32 @@ public class AtigatoHtmlController extends AbstractHtmlController {
 
     @Autowired
     UploadFileService uploadFileService;
-    @GetMapping
-    public String index(@ModelAttribute SearchArigatoForm form, Model model){
-        val condition = new AdminSearchCondition();
-        val page = arigatoService.search(Pageable.DEFAULT, condition);
-        model.addAttribute("page", page);
-        return "modules/arigato/find";
-    }
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     public String getFunctionName() {
         return "A_ARIGATO";
+    }
+
+    @GetMapping
+    public String index(@ModelAttribute SearchArigatoForm form, Model model, BindingResult br){
+        val condition = modelMapper.map(form, AdminSearchCondition.class);
+        val page = arigatoService.search(form, condition);
+        model.addAttribute("page", page);
+        return "modules/arigato/find";
+    }
+
+    @GetMapping("/find")
+    public String find(@Validated @ModelAttribute SearchArigatoForm form, BindingResult br, RedirectAttributes attributes){
+        if(br.hasErrors()){
+            setFlashAttributeErrors(attributes, br);
+            return "redirect:/arigato";
+        }
+        return "forward:/arigato";
+    }
+
     @GetMapping("/{id}/image/{uploadFileId}")
     public ResponseEntity<byte[]> image(@PathVariable long id, @PathVariable long uploadFileId) {
         //TODO arigatoIdとぶつけて違ったら 404
