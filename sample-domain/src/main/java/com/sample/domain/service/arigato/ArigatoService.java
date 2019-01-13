@@ -1,5 +1,6 @@
 package com.sample.domain.service.arigato;
 
+import com.sample.domain.dto.arigato.AdminSearchCondition;
 import com.sample.domain.dto.arigato.Arigato;
 import com.sample.domain.dto.arigato.Fav;
 import com.sample.domain.dto.arigato.SearchCondition;
@@ -75,6 +76,16 @@ public class ArigatoService extends BaseTransactionalService {
         return page;
     }
 
+    @Transactional(readOnly = true)
+    public Page<Arigato> search(Pageable pageable, AdminSearchCondition condition) {
+        Assert.notNull(pageable,"pageable must be null");
+        Assert.notNull(condition,"condition must be null");
+
+        val page = arigatoRepository.findBy(pageable, condition);
+        page.getData().stream().forEach(a -> populateMetaInfo(a));
+        return page;
+    }
+
     private void populateUser(Arigato a) {
         a.setFrom(userRepository.findById(a.getFromId()));
         a.setTo(userRepository.findById(a.getToId()));
@@ -84,12 +95,12 @@ public class ArigatoService extends BaseTransactionalService {
         val images = arigatoRepository.findImageByArigatoId(arigato.getId());
         images.stream().forEach(i -> arigato.getUploadFileId().add(i.getId()));
     }
-    private void populateFav(Arigato arigato, long mineId) {
+    private void populateFav(Arigato arigato) {
         arigato.setFavCounts(arigatoRepository.countFav(arigato.getId()));
-        arigato.setFav(arigatoRepository.findFavBy(arigato.getId(),mineId).isPresent());
     }
 
     private void populateMine(Arigato arigato, long mineId) {
+        arigato.setFav(arigatoRepository.findFavBy(arigato.getId(),mineId).isPresent());
         arigato.setFromMe(arigato.getFromId() == mineId);
         arigato.setToMe(arigato.getToId() == mineId);
     }
@@ -126,9 +137,13 @@ public class ArigatoService extends BaseTransactionalService {
     }
 
     private void populateMetaInfo(Arigato arigato, long mineId){
+        populateMetaInfo(arigato);
+        populateMine(arigato, mineId);
+    }
+
+    private void populateMetaInfo(Arigato arigato) {
         populateUser(arigato);
         populateImage(arigato);
-        populateFav(arigato, mineId);
-        populateMine(arigato, mineId);
+        populateFav(arigato);
     }
 }

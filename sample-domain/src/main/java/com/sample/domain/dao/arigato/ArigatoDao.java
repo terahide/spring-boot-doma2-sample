@@ -1,11 +1,13 @@
 package com.sample.domain.dao.arigato;
 
+import com.sample.domain.dto.arigato.AdminSearchCondition;
 import com.sample.domain.dto.arigato.Arigato;
 import com.sample.domain.dto.arigato.SearchCondition;
 import org.seasar.doma.*;
 import org.seasar.doma.boot.ConfigAutowireable;
 import org.seasar.doma.jdbc.SelectOptions;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;
 
@@ -27,4 +29,6 @@ public interface ArigatoDao {
     @Select
     Optional<Arigato> findById(long arigatoId);
 
+    @Select(strategy = SelectType.COLLECT)
+    <R> R findByAdmin(final AdminSearchCondition condition, final SelectOptions options, final Collector<Arigato, ?, R> collector);
 }

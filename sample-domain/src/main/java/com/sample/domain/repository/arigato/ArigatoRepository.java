@@ -4,10 +4,7 @@ import com.sample.domain.dao.arigato.ArigatoDao;
 import com.sample.domain.dao.arigato.ArigatoImageDao;
 import com.sample.domain.dao.arigato.FavDao;
 import com.sample.domain.dao.system.UploadFileDao;
-import com.sample.domain.dto.arigato.Arigato;
-import com.sample.domain.dto.arigato.ArigatoImage;
-import com.sample.domain.dto.arigato.Fav;
-import com.sample.domain.dto.arigato.SearchCondition;
+import com.sample.domain.dto.arigato.*;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.dto.system.UploadFile;
@@ -57,6 +54,12 @@ public class ArigatoRepository extends BaseRepository {
     public Page<Arigato> findBy(Pageable pageable, SearchCondition condition) {
         val options = createSelectOptions(pageable).count();
         val data = arigatoDao.findBy(condition, options, toList());
+        return pageFactory.create(data, pageable, options.getCount());
+    }
+
+    public Page<Arigato> findBy(Pageable pageable, AdminSearchCondition condition) {
+        val options = createSelectOptions(pageable).count();
+        val data = arigatoDao.findByAdmin(condition, options, toList());
         return pageFactory.create(data, pageable, options.getCount());
     }
 
