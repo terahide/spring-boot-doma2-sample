@@ -11,7 +11,7 @@
     <form th:object="${arigatoForm}" th:action="@{/arigato__${arigato == null ? '' : '/' + arigato.id}__}" method="post" id="arigatoForm"
           enctype="multipart/form-data" >
         <div class="box-body">
-            <select th:replace="~{common/selectField :: select ('誰に？', 'toId', ${users})}" />
+            <select th:replace="~{common/selectField :: select ('誰に？', 'toId', ${users})}" /><!--/*TODO ドロップダウンでなくて選べるようにする*/-->
             <input th:replace="~{common/inputField :: input ('text', '件名', 'subject')}" />
             <input th:replace="~{common/inputField :: input ('text', '内容', 'body')}" />
             <input th:replace="~{common/inputField :: input ('file', '添付画像', 'image')}" />
