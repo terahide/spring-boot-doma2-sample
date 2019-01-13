@@ -10,52 +10,38 @@
             <h2>Front Home</h2>
             <div><a th:href="@{/arigato}" id="toArigato" class="glyphicon glyphicon-heart">ありがと</a></div>
 
-            <section class="arigato" th:each="arigato : ${page.data}" th:object="${arigato}">
-                <hr />
-                <dev th:replace="~{arigato/item :: item (${arigato})}" />
-            </section>
+            <div id="agigatoContainer">
+                <section class="arigato unsetup" th:each="arigato : ${page.data}" th:object="${arigato}">
+                    <hr />
+                    <dev th:replace="~{arigato/item :: item (${arigato})}" />
+                </section>
+            </div>
+            <div th:if="${page.hasMorePage()}"><hr /><a href="javascript:void(0)" id="more">もっと見る</a></div>
         </div>
         <div layout:fragment="scripts" th:remove="tag">
             <input
                     type="hidden"
                     th:name="${_csrf.parameterName}"
                     th:value="${_csrf.token}" />
+            <input
+                    type="hidden"
+                    id="p"
+                    th:value="${page.page}" />
+            <script type="text/javascript" th:src="@{/static/js/arigato/eventHandlerSetup.js}"></script>
             <script type="text/javascript">
                 $.ajaxSetup({
                     headers: { 'X-XSRF-TOKEN': $('input[name="_csrf"]').val() }
                 });
                 $().ready(() => {
-                    $('.arigato .fav').on('click', event => {
-                        var $this = $(event.currentTarget)
-                        $.ajax({
-                            url: '/api/v1/arigato/' + $this.data('id') + '/fav',
-                            type: 'PUT',
-                            data:{check: ! $this.hasClass('checked')}
-                        }).done( (data) => {
-                            $('.favCounts', $this.parent()).text(data.fav_counts)
-                            $this.toggleClass('checked');
-                        }).fail( (data) => {
-                            alert('error'); //TODO Fake It
-                        })
-                    });
-                    $('.arigato .delete').on('click', event => {
+                    setupHandler();
+                    $('#more').on('click', event => {
                         var $this = $(event.currentTarget);
                         $.ajax({
-                            url: '/api/v1/arigato/' + $this.data('id'),
-                            type: 'DELETE'
+                            url: '/more/' + (parseInt($('#p').val()) + 1),
+                            type: 'GET'
                         }).done( (data) => {
-                            $this.parents('.arigato').remove()
-                        }).fail( (data) => {
-                            alert('error'); //TODO Fake It
-                        })
-                    });
-                    $('.arigato .deleteImage').on('click', event => {
-                        var $this = $(event.currentTarget);
-                        $.ajax({
-                            url: '/api/v1/arigato/' + $this.data('arigato-id') + '/image/' + $this.data('id'),
-                            type: 'DELETE'
-                        }).done( (data) => {
-                            $this.parent().remove()
+                            $('#agigatoContainer').append(data)
+                            setupHandler();
                         }).fail( (data) => {
                             alert('error'); //TODO Fake It
                         })

@@ -12,15 +12,17 @@
     <hr />
     <div><a href="javascript:void(0)" id="fromMeToggle" class="glyphicon glyphicon-comment">私からありがと</a> <a href="javascript:void(0)" id="toMeToggle" class="glyphicon glyphicon-folder-open">あなたからありがと</a></div>
     <div id="fromMe">
-        <section class="arigato" th:each="arigato : ${page_from.data}" th:object="${arigato}">
+        <section class="arigato unsetup" th:each="arigato : ${page_from.data}" th:object="${arigato}">
             <hr />
             <dev th:replace="~{arigato/item :: item (${arigato})}" />
+            <div th:if="${page_from.hasMorePage()}"><hr /><a href="javascript:void(0)" id="moreFromMe">もっと見る</a></div>
         </section>
     </div>
     <div id="toMe">
-        <section class="arigato" th:each="arigato : ${page_to.data}" th:object="${arigato}">
+        <section class="arigato unsetup" th:each="arigato : ${page_to.data}" th:object="${arigato}">
             <hr />
             <dev th:replace="~{arigato/item :: item (${arigato})}" />
+            <div th:if="${page_to.hasMorePage()}"><hr /><a href="javascript:void(0)" id="moreToMe">もっと見る</a></div>
         </section>
     </div>
 </div>
@@ -29,51 +31,52 @@
             type="hidden"
             th:name="${_csrf.parameterName}"
             th:value="${_csrf.token}" />
+    <input
+            type="hidden"
+            id="fromMeP"
+            th:value="${page_from.page}" />
+    <input
+            type="hidden"
+            id="toMeP"
+            th:value="${page_to.page}" />
+    <script type="text/javascript" th:src="@{/static/js/arigato/eventHandlerSetup.js}"></script>
     <script type="text/javascript">
         $.ajaxSetup({
             headers: { 'X-XSRF-TOKEN': $('input[name="_csrf"]').val() }
         });
+        const handleMore = (event, type, $container, p) => {
+            var $this = $(event.currentTarget);
+            $.ajax({
+                url: '/account/more' + type + "/" + (p + 1),
+                type: 'GET'
+            }).done( (data) => {
+                $container.append(data)
+                setupHandler();
+            }).fail( (data) => {
+                alert('error'); //TODO Fake It
+            })
+        };
         $().ready(() => {
-            $('.fav').on('click', event => {
-                var $this = $(event.currentTarget)
-                $.ajax({
-                    url: '/api/v1/arigato/' + $this.data('id') + '/fav',
-                    type: 'PUT',
-                    data:{check: ! $this.hasClass('checked')}
-                }).done( (data) => {
-                    $('.favCounts', $this.parent()).text(data.fav_counts)
-                    $this.toggleClass('checked');
-                }).fail( (data) => {
-                    alert('error'); //TODO Fake It
-                })
-            });
-            $('.arigato .delete').on('click', event => {
-                var $this = $(event.currentTarget);
-                $.ajax({
-                    url: '/api/v1/arigato/' + $this.data('id'),
-                    type: 'DELETE'
-                }).done( (data) => {
-                    $this.parents('.arigato').remove()
-                }).fail( (data) => {
-                    alert('error'); //TODO Fake It
-                })
-            });
-            $('.arigato .deleteImage').on('click', event => {
-                var $this = $(event.currentTarget);
-                $.ajax({
-                    url: '/api/v1/arigato/' + $this.data('arigato-id') + '/image/' + $this.data('id'),
-                    type: 'DELETE'
-                }).done( (data) => {
-                    $this.parent().remove()
-                }).fail( (data) => {
-                    alert('error'); //TODO Fake It
-                })
-            });
+            setupHandler();
             $('#fromMeToggle, #toMeToggle').on('click', event => {
                 var $this = $(event.currentTarget)
+                console.log(0)
                 $('#fromMe, #toMe').toggle()
             })
             $('#toMe').hide();
+
+            $('#moreFromMe').on('click', event => {
+                handleMore(event,
+                            '/from/me',
+                            $('#fromMe'),
+                            parseInt($('#fromMeP').val()));
+            });
+            $('#moreToMe').on('click', event => {
+                handleMore(event,
+                            '/to/me',
+                            $('toMe'),
+                            parseInt($('#toMeP').val()));
+            });
         });
     </script>
 </div>>

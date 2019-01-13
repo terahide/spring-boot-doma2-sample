@@ -29,4 +29,9 @@ public interface Page<T> extends Pageable {
      * @return
      */
     int getTotalPages();
+
+    /**
+     * まだページがあるかを返します
+     */
+    boolean hasMorePage();
 }

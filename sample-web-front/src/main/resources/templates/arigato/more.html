@@ -1,0 +1,7 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"><!--/* menuItemにパラメータを渡す */-->
+<section class="arigato unsetup" th:each="arigato : ${page.data}" th:object="${arigato}">
+    <hr />
+    <dev th:replace="~{arigato/item :: item (${arigato})}" />
+</section>
+</html>

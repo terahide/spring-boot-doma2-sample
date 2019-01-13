@@ -36,4 +36,9 @@ public class PageImpl<T> implements Page<T>, Serializable {
         this.perpage = pageable.getPerpage();
         this.totalPages = Math.max(1, (int) Math.ceil((double) count / perpage));
     }
+
+    @Override
+    public boolean hasMorePage() {
+        return page < totalPages ;
+    }
 }
