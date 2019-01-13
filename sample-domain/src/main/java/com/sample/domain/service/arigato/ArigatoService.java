@@ -136,6 +136,11 @@ public class ArigatoService extends BaseTransactionalService {
         return arigato;
     }
 
+    @Transactional(readOnly = true)
+    public Arigato get(long arigatoId) {
+        return arigatoRepository.findById(arigatoId);
+    }
+
     private void populateMetaInfo(Arigato arigato, long mineId){
         populateMetaInfo(arigato);
         populateMine(arigato, mineId);
