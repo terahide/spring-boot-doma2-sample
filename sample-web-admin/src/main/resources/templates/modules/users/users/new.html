@@ -7,7 +7,7 @@
     </head>
     <body>
         <div layout:fragment="sidebar">
-            <div th:replace="~{layouts/sidebar :: sidebar ('user', 'user')}"></div>
+            <div th:replace="~{layouts/sidebar :: sidebar ('arigato', 'user')}"></div>
         </div>
         <section layout:fragment="content-header">
             <h1 th:with="text=${userForm.isNew()} ? 'ユーザ登録' : 'ユーザ編集'" th:text="${text}">ユーザ登録</h1>
