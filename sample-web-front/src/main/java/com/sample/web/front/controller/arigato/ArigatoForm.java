@@ -17,6 +17,7 @@ public class ArigatoForm extends BaseForm {
 
     Long id;
 
+    String toName;
     @NotNull
     Long toId;
     @NotEmpty

@@ -11,7 +11,19 @@
     <form th:object="${arigatoForm}" th:action="@{/arigato__${arigato == null ? '' : '/' + arigato.id}__}" method="post" id="arigatoForm"
           enctype="multipart/form-data" >
         <div class="box-body">
-            <select th:replace="~{common/selectField :: select ('誰に？', 'toId', ${users})}" /><!--/*TODO ドロップダウンでなくて選べるようにする*/-->
+            <div th:with="valid=${!#fields.hasErrors('toId')}" th:class="${'form-group' + (valid ? '' : ' has-error')}" class="form-group">
+                <label class="col-sm-2 control-label" >誰に？</label>
+                <div class="col-sm-10">
+                    <input id="toName" class="form-control" type="text" th:field="*{toName}" />
+                    <input id="toId" type="hidden" name="toId" />
+                    <span th:if="${valid}" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                    <th:block th:if="${!valid}">
+                        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-inline" th:errors="*{toId}">Error</span>
+                    </th:block>
+                </div>
+            </div>
+
             <input th:replace="~{common/inputField :: input ('text', '件名', 'subject')}" />
             <input th:replace="~{common/inputField :: input ('text', '内容', 'body')}" />
             <input th:replace="~{common/inputField :: input ('file', '添付画像', 'image')}" />
@@ -33,11 +45,36 @@
             type="hidden"
             th:name="${_csrf.parameterName}"
             th:value="${_csrf.token}" />
+    <select id="users" style="display: none;">
+        <option type="hidden" th:each="item : ${users}" th:value="${item.id}" th:text="${item}" />
+    </select>
     <script type="text/javascript">
+        const getUsers = () => {
+            const a = [];
+            $('select#users option').each((i, e) => {
+                a.push($(e).text())
+            })
+            return a;
+        };
+        const users = getUsers();
         $.ajaxSetup({
             headers: { 'X-XSRF-TOKEN': $('input[name="_csrf"]').val() }
         });
         $().ready(() => {
+            $('input[name="toName"]').autocomplete({
+                source: ( req, res ) => {
+                    const a = []
+                    users.forEach((val) => {
+                        if( val.includes(req.term) ){
+                            a.push(val);
+                        }
+                    });
+                    res(a)
+                },
+                autoFocus: true,
+                delay: 500,
+                minLength: 2
+            });
             $('input[name="image"]').on('change', event => {
                 $('#imageContainer').hide();
             });
@@ -51,6 +88,21 @@
                 }).fail( (data) => {
                     alert('error'); //TODO Fake It
                 })
+            });
+            $('#arigatoForm').on('submit', event => {
+                const name = $('#toName').val();
+                const getUser = (name) => {
+                    var id = undefined;
+                    $('#users option').each((i, e) => {
+                        if( $(e).text() === name ){
+                            id = $(e).val();
+                            return;
+                        }
+                    });
+                    return id;
+                };
+                const id = getUser(name);
+                $('#toId').val(id);
             });
         });
     </script>
