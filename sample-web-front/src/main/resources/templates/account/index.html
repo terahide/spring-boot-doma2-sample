@@ -10,7 +10,7 @@
     <h2>Account</h2>
     <div><a th:href="@{/account/profile}" id="toProfile" class="glyphicon glyphicon-pencil">プロフィール編集</a> <a th:href="@{/account/password}" id="toPassword" class="glyphicon glyphicon-info-sign">パスワード変更</a></div>
     <hr />
-    <div><a href="javascript:void(0)" id="fromMeToggle" class="glyphicon glyphicon-comment">私からありがと</a> <a href="javascript:void(0)" id="toMeToggle" class="glyphicon glyphicon-folder-open">あなたからありがと</a></div>
+    <div><a href="javascript:void(0)" id="fromMeToggle" class="glyphicon glyphicon-comment">あなたへのありがと</a> <a href="javascript:void(0)" id="toMeToggle" class="glyphicon glyphicon-folder-open">あなたからありがと</a></div>
     <div id="fromMe">
         <section class="arigato unsetup" th:each="arigato : ${page_from.data}" th:object="${arigato}">
             <hr />
@@ -58,12 +58,12 @@
         };
         $().ready(() => {
             setupHandler();
+            $('#toMeToggle, #toMe').hide();
             $('#fromMeToggle, #toMeToggle').on('click', event => {
                 var $this = $(event.currentTarget)
                 console.log(0)
-                $('#fromMe, #toMe').toggle()
+                $('#fromMeToggle, #toMeToggle, #fromMe, #toMe').toggle()
             })
-            $('#toMe').hide();
 
             $('#moreFromMe').on('click', event => {
                 handleMore(event,

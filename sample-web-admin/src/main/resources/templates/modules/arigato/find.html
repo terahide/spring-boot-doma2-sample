@@ -97,7 +97,7 @@
                     <td th:text="*{id}" />
 
                     <td>
-                        <span th:text="*{#temporals.format(createdAt, 'yyyy/MM/dd HH:mm:ss')}" />
+                        <span th:text="*{subject}" /> (<span th:text="*{#temporals.format(createdAt, 'yyyy/MM/dd HH:mm:ss')}" />)
                         <br />
                         &nbsp;<image th:if="*{from.hasImage()}" height="30px" th:src="@{/users/users/__*{from.id}__/image}" />
                         <span th:text="*{from.name}" /> から
@@ -106,8 +106,6 @@
                         <span th:text="*{to.name}" /> へ
                     </td>
                     <td>
-                        <span th:text="*{subject}" />
-                        <br />
                         <span th:text="*{body}" />
                         ★<span th:text="*{favCounts}" />
                         <br>
