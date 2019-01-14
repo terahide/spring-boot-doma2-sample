@@ -19,18 +19,22 @@
     <hr />
     <div><a href="javascript:void(0)" id="fromMeToggle" class="glyphicon glyphicon-comment"><span th:text="${user.name}" /> さんへのありがとへ</a> <a href="javascript:void(0)" id="toMeToggle" class="glyphicon glyphicon-folder-open"><span th:text="${user.name}" /> さんからのありがとへ</a></div>
     <div id="fromMe">
+        <div class="agigatoContainer">
         <section class="arigato unsetup" th:each="arigato : ${page_from.data}" th:object="${arigato}">
             <hr />
             <dev th:replace="~{arigato/item :: item (${arigato})}" />
-            <div th:if="${page_from.hasMorePage()}"><hr /><a href="javascript:void(0)" id="moreFromMe">もっと見る</a></div>
         </section>
+        </div>
+        <div th:if="${page_from.hasMorePage()}"><hr /><a href="javascript:void(0)" id="moreFromMe">もっと見る</a></div>
     </div>
     <div id="toMe">
+        <div class="agigatoContainer">
         <section class="arigato unsetup" th:each="arigato : ${page_to.data}" th:object="${arigato}">
             <hr />
             <dev th:replace="~{arigato/item :: item (${arigato})}" />
-            <div th:if="${page_to.hasMorePage()}"><hr /><a href="javascript:void(0)" id="moreToMe">もっと見る</a></div>
         </section>
+        </div>
+        <div th:if="${page_to.hasMorePage()}"><hr /><a href="javascript:void(0)" id="moreToMe">もっと見る</a></div>
     </div>
 </div>
 <div layout:fragment="scripts" th:remove="tag">
@@ -51,14 +55,20 @@
         $.ajaxSetup({
             headers: { 'X-XSRF-TOKEN': $('input[name="_csrf"]').val() }
         });
-        const handleMore = (event, type, $container, p) => {
-            var $this = $(event.currentTarget);
+        const handleMore = (event, type, $container, $p) => {
+            const $this = $(event.currentTarget);
+            const p = parseInt($p.val()) + 1;
             $.ajax({
-                url: '/account/more' + type + "/" + (p + 1),
+                url: '/account/more' + type + "/" + p,
                 type: 'GET'
             }).done( (data) => {
-                $container.append(data)
-                setupHandler();
+                if(data.includes('section')){
+                    $p.val(p);
+                    $container.append(data)
+                    setupHandler();
+                }else{
+                    $this.hide();
+                }
             }).fail( (data) => {
                 alert('error'); //TODO Fake It
             })
@@ -75,14 +85,14 @@
             $('#moreFromMe').on('click', event => {
                 handleMore(event,
                             '/from/me',
-                            $('#fromMe'),
-                            parseInt($('#fromMeP').val()));
+                            $('#fromMe .agigatoContainer'),
+                            $('#fromMeP'));
             });
             $('#moreToMe').on('click', event => {
                 handleMore(event,
                             '/to/me',
-                            $('toMe'),
-                            parseInt($('#toMeP').val()));
+                            $('#toMe .agigatoContainer'),
+                            $('#toMeP'));
             });
         });
     </script>
