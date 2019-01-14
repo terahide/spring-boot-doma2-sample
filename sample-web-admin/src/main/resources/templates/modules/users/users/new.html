@@ -23,6 +23,7 @@
                       th:with="action=${userForm.isNew()} ? @{/users/users/new} : @{/users/users/edit/{id}(id=*{id})}"
                       class="form-horizontal" enctype="multipart/form-data" method="post">
                     <div class="box-body">
+                        <input type="hidden" th:field="*{version}" />
                         <input th:replace="~{fragments/inputField :: input ('text', '苗字', 'lastName')}" />
                         <input th:replace="~{fragments/inputField :: input ('text', '名前', 'firstName')}" />
                         <input th:replace="~{fragments/inputField :: input ('password', 'パスワード', 'password')}" />

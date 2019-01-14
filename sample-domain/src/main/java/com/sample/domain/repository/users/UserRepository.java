@@ -6,6 +6,10 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.Optional;
 
+import com.sample.domain.DefaultModelMapperFactory;
+import com.sample.domain.dto.system.UploadFile;
+import org.modelmapper.Conditions;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -109,13 +113,24 @@ public class UserRepository extends BaseRepository {
         if (uploadFile != null) {
             // 添付ファイルがある場合は、登録・更新する
             val uploadFileId = inputUser.getUploadFileId();
+            Optional<UploadFile> entity;
             if (uploadFileId == null) {
-                uploadFileDao.insert(uploadFile);
+                entity = Optional.empty();
             } else {
-                uploadFileDao.update(uploadFile);
+                entity = uploadFileDao.selectById(uploadFileId);
+            }
+            if(entity.isPresent()) {
+                val e = entity.get();
+                val modelMapper = DefaultModelMapperFactory.create();
+                modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+                modelMapper.map(uploadFile, e);
+                uploadFileDao.update(e);
+                inputUser.setUploadFileId(uploadFileId);
+            }else{
+                uploadFileDao.insert(uploadFile);
+                inputUser.setUploadFileId(uploadFile.getId());
             }
 
-            inputUser.setUploadFileId(uploadFile.getId());
         }
 
         // 1件更新
