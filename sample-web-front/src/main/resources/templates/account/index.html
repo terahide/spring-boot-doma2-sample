@@ -16,6 +16,7 @@
     <div><span class="glyphicon glyphicon-info-sign">紹介：</span><span th:if="${user.info == null}" >（紹介はまだ記載されていません）</span><span th:if="${user.info != null}" th:text="${user.info}" /></div>
     <br />
     <div>
+        <span th:unless="${isMyAccount}"><a th:href="@{/arigato?name=__${user.name}__}" id="toArigato" class="glyphicon glyphicon-heart">ありがとする</a></span>
         <span th:if="${isMyAccount}">
             <a th:href="@{/account/profile}" id="toProfile" class="glyphicon glyphicon-pencil">プロフィール編集</a>
             <a th:href="@{/account/password}" id="toPassword" class="glyphicon glyphicon-info-sign">パスワード変更</a>

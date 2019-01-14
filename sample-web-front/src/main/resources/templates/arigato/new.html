@@ -48,6 +48,7 @@
     <select id="users" style="display: none;">
         <option type="hidden" th:each="item : ${users}" th:value="${item.id}" th:text="${item}" />
     </select>
+    <script type="text/javascript" th:src="@{/static/js/arigato/arigatoSupport.js}"></script>
     <script type="text/javascript">
         const getUsers = () => {
             const a = [];
