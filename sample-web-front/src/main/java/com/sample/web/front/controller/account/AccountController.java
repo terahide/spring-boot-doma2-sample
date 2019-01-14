@@ -65,6 +65,7 @@ public class AccountController extends AbstractHtmlController {
 
         condition = new SearchCondition(SearchCondition.Mode.TO_ME, mine.getId());
         page = arigatoService.search(Pageable.DEFAULT, condition);//TODO Paging
+        model.addAttribute("user", mine);
         model.addAttribute("page_to", page);
         return "account/index";
     }

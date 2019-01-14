@@ -8,6 +8,13 @@
 <!--/* この形式のコメントはHTMLソースから削除される */-->
 <div layout:fragment="content">
     <h2>Account</h2>
+    <div><image th:unless="${user.hasImage()}" height="200px" th:src="@{/static/images/no_photo.png}" /><image th:if="${user.hasImage()}" height="200px" th:src="@{/user/__${user.id}__/image}" /></div>
+    <div><span class="glyphicon glyphicon-user">名前：</span><span th:text="${user.name}" /></div>
+    <div><span class="glyphicon glyphicon-envelope">email：</span><span th:text="${user.email}" /></div>
+    <div><span class="glyphicon glyphicon-phone">所属：</span><span th:text="${user.dept}" /></div>
+    <div><span class="glyphicon glyphicon-phone">電話：</span><span th:text="${user.tel}" /></div>
+    <div><span class="glyphicon glyphicon-info-sign">紹介：</span><span th:if="${user.info == null}" >（紹介はまだ記載されていません）</span><span th:if="${user.info != null}" th:text="${user.info}" /></div>
+    <br />
     <div><a th:href="@{/account/profile}" id="toProfile" class="glyphicon glyphicon-pencil">プロフィール編集</a> <a th:href="@{/account/password}" id="toPassword" class="glyphicon glyphicon-info-sign">パスワード変更</a></div>
     <hr />
     <div><a href="javascript:void(0)" id="fromMeToggle" class="glyphicon glyphicon-comment">あなたへのありがと</a> <a href="javascript:void(0)" id="toMeToggle" class="glyphicon glyphicon-folder-open">あなたからありがと</a></div>

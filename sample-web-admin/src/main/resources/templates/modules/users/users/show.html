@@ -27,24 +27,30 @@
                         </tr>
                         <tr>
                             <th>氏名</th>
-                            <td><b th:text="*{lastName + ' ' + firstName}"></b></td>
+                            <td>
+                                <image width="300px" th:if="*{hasImage()}" th:src="@{/users/users/__*{id}__/image}" />
+                                <br>
+                                <b th:text="*{lastName + ' ' + firstName}"></b>
+                            </td>
                         </tr>
                         <tr>
                             <th>メールアドレス</th>
                             <td th:text="*{email}"></td>
                         </tr>
                         <tr>
-                            <th>住所</th>
-                            <td th:text="*{address}"></td>
-                        </tr>
-                        <tr>
                             <th>電話番号</th>
                             <td th:text="*{tel}"></td>
                         </tr>
                         <tr>
-                            <th>添付画像</th>
+                            <th>所属</th>
+                            <td th:text="*{dept}"></td>
+                        </tr>
+                        <tr>
+                            <th>情報</th>
+                            <td th:text="*{info}"></td>
+                        </tr>
+                        <tr>
                             <td>
-                                <image width="300px" th:if="*{hasImage()}" th:src="@{/users/users/__*{id}__/image}" />
                             </td>
                         </tr>
 

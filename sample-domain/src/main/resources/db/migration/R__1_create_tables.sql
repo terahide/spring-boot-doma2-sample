@@ -135,11 +135,13 @@ CREATE TABLE IF NOT EXISTS users(
   user_id INT(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ユーザID'
   , first_name VARCHAR(40) NOT NULL COMMENT '名前'
   , last_name VARCHAR(40) NOT NULL COMMENT '苗字'
-  , email VARCHAR(100) DEFAULT NULL COMMENT 'メールアドレス'
+  , email VARCHAR(100) DEFAULT NULL UNIQUE COMMENT 'メールアドレス'
   , password VARCHAR(100) DEFAULT NULL COMMENT 'パスワード'
   , tel VARCHAR(20) DEFAULT NULL COMMENT '電話番号'
   , zip VARCHAR(20) DEFAULT NULL COMMENT '郵便番号'
   , address VARCHAR(100) DEFAULT NULL COMMENT '住所'
+  , dept VARCHAR(100) DEFAULT NULL COMMENT '所属'
+  , info TEXT DEFAULT NULL COMMENT '情報'
   , upload_file_id INT(11) unsigned DEFAULT NULL COMMENT '添付ファイル'
   , created_by VARCHAR(50) NOT NULL COMMENT '登録者'
   , created_at DATETIME NOT NULL COMMENT '登録日時'
@@ -149,6 +151,7 @@ CREATE TABLE IF NOT EXISTS users(
   , deleted_at DATETIME DEFAULT NULL COMMENT '削除日時'
   , version INT(11) unsigned NOT NULL DEFAULT 1 COMMENT '改訂番号'
   , PRIMARY KEY (user_id)
+  , UNIQUE(first_name, last_name)
   , KEY idx_users (email, deleted_at)
 ) COMMENT='ユーザー';
 

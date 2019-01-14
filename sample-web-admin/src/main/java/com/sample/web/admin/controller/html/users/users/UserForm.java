@@ -50,6 +50,12 @@ public class UserForm extends BaseForm {
     // 住所
     String address;
 
+    // 所属
+    String dept;
+
+    // 情報
+    String info;
+
     // 添付ファイル
     @ContentType(allowed = { MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE })
     transient MultipartFile userImage; // serializableではないのでtransientにする

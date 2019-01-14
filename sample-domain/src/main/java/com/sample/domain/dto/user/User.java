@@ -47,6 +47,8 @@ public class User extends DomaDtoImpl {
     // 電話番号
     @Digits(fraction = 0, integer = 10)
     String tel;
+    String dept;
+    String info;
 
     // 郵便番号
     @NotEmpty
