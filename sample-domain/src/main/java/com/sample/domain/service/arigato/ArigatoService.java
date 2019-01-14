@@ -69,6 +69,7 @@ public class ArigatoService extends BaseTransactionalService {
     public Page<Arigato> search(Pageable pageable, SearchCondition condition) {
         Assert.notNull(pageable,"pageable must be null");
         Assert.notNull(condition,"condition must be null");
+        Assert.isTrue(condition.getUserId() != 0,"condition.userId must be zero");
         Assert.isTrue(condition.getMineId() != 0,"condition.mineId must be zero");
 
         val page = arigatoRepository.findBy(pageable, condition);

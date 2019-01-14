@@ -1,15 +1,11 @@
 package com.sample.web.front.controller.account;
 
-import com.sample.domain.dto.arigato.Arigato;
 import com.sample.domain.dto.arigato.SearchCondition;
-import com.sample.domain.dto.common.DefaultPageable;
-import com.sample.domain.dto.common.Page;
-import com.sample.domain.dto.common.Pageable;
 import com.sample.domain.dto.system.UploadFile;
-import com.sample.domain.service.arigato.ArigatoService;
 import com.sample.domain.service.users.UserService;
 import com.sample.web.base.controller.html.AbstractHtmlController;
 import com.sample.web.base.util.MultipartFileUtils;
+import com.sample.web.front.controller.user.UsersArigatoHelper;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +29,6 @@ public class AccountController extends AbstractHtmlController {
         return "F_ACCOUNT";
     }
     @Autowired
-    ArigatoService arigatoService;
-    @Autowired
     UserService userService;
 
     @Autowired
@@ -42,6 +36,9 @@ public class AccountController extends AbstractHtmlController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    UsersArigatoHelper usersArigatoHelper;
 
     @ModelAttribute("passwordForm")
     public PasswordForm passwordForm() {
@@ -61,33 +58,19 @@ public class AccountController extends AbstractHtmlController {
     @GetMapping
     public String index(Model model) {
         val mine = findMe();
-        SearchCondition condition = new SearchCondition(SearchCondition.Mode.FROM_ME, mine.getId());
-        Page<Arigato> page = arigatoService.search(Pageable.DEFAULT, condition);
-        model.addAttribute("page_from", page);
-
-        condition = new SearchCondition(SearchCondition.Mode.TO_ME, mine.getId());
-        page = arigatoService.search(Pageable.DEFAULT, condition);//TODO Paging
-        model.addAttribute("user", mine);
-        model.addAttribute("page_to", page);
-        return "account/index";
+        return usersArigatoHelper.index(mine, mine.getId(), "/account/more",  model);
     }
 
     @GetMapping("/more/from/me/{p}")
     public String moreFromMe(@PathVariable int p, Model model) {
-        return more(SearchCondition.Mode.FROM_ME, p, model);
+        val mine = findMe();
+        return usersArigatoHelper.more(mine, mine.getId(), SearchCondition.Mode.FROM, p, model);
     }
 
     @GetMapping("/more/to/me/{p}")
     public String moreToMe(@PathVariable int p, Model model) {
-        return more(SearchCondition.Mode.TO_ME, p, model);
-    }
-
-    private String more(SearchCondition.Mode mode, int p, Model model) {
         val mine = findMe();
-        SearchCondition condition = new SearchCondition(mode, mine.getId());
-        Page<Arigato> page = arigatoService.search(page(p), condition);
-        model.addAttribute("page", page);
-        return "arigato/more";
+        return usersArigatoHelper.more(mine, mine.getId(), SearchCondition.Mode.TO, p, model);
     }
 
     @GetMapping("/profile")
@@ -139,8 +122,5 @@ public class AccountController extends AbstractHtmlController {
 
         attributes.addFlashAttribute(GLOBAL_MESSAGE, getMessage("password.changed"));
         return "redirect:/account";
-    }
-    private Pageable page(int page){
-        return new DefaultPageable(page, Pageable.DEFAULT.getPerpage());
     }
 }

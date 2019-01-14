@@ -15,7 +15,12 @@
     <div><span class="glyphicon glyphicon-tag">所属：</span><span th:text="${user.dept}" /></div>
     <div><span class="glyphicon glyphicon-info-sign">紹介：</span><span th:if="${user.info == null}" >（紹介はまだ記載されていません）</span><span th:if="${user.info != null}" th:text="${user.info}" /></div>
     <br />
-    <div><a th:href="@{/account/profile}" id="toProfile" class="glyphicon glyphicon-pencil">プロフィール編集</a> <a th:href="@{/account/password}" id="toPassword" class="glyphicon glyphicon-info-sign">パスワード変更</a></div>
+    <div>
+        <span th:if="${isMyAccount}">
+            <a th:href="@{/account/profile}" id="toProfile" class="glyphicon glyphicon-pencil">プロフィール編集</a>
+            <a th:href="@{/account/password}" id="toPassword" class="glyphicon glyphicon-info-sign">パスワード変更</a>
+        </span>
+    </div>
     <hr />
     <div><a href="javascript:void(0)" id="fromMeToggle" class="glyphicon glyphicon-comment"><span th:text="${user.name}" /> さんへのありがとへ</a> <a href="javascript:void(0)" id="toMeToggle" class="glyphicon glyphicon-folder-open"><span th:text="${user.name}" /> さんからのありがとへ</a></div>
     <div id="fromMe">
@@ -25,7 +30,7 @@
             <dev th:replace="~{arigato/item :: item (${arigato})}" />
         </section>
         </div>
-        <div th:if="${page_from.hasMorePage()}"><hr /><a href="javascript:void(0)" id="moreFromMe">もっと見る</a></div>
+        <div th:if="${page_from.hasMorePage()}"><hr /><a th:data-url="${moreUrl}" href="javascript:void(0)" id="moreFromMe">もっと見る</a></div>
     </div>
     <div id="toMe">
         <div class="agigatoContainer">
@@ -34,7 +39,7 @@
             <dev th:replace="~{arigato/item :: item (${arigato})}" />
         </section>
         </div>
-        <div th:if="${page_to.hasMorePage()}"><hr /><a href="javascript:void(0)" id="moreToMe">もっと見る</a></div>
+        <div th:if="${page_to.hasMorePage()}"><hr /><a th:data-url="${moreUrl}" href="javascript:void(0)" id="moreToMe">もっと見る</a></div>
     </div>
 </div>
 <div layout:fragment="scripts" th:remove="tag">
@@ -59,7 +64,7 @@
             const $this = $(event.currentTarget);
             const p = parseInt($p.val()) + 1;
             $.ajax({
-                url: '/account/more' + type + "/" + p,
+                url: $this.data('url') + type + "/" + p,
                 type: 'GET'
             }).done( (data) => {
                 if(data.includes('section')){

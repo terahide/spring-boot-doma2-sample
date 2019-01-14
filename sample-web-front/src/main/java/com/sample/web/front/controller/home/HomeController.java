@@ -40,7 +40,7 @@ public class HomeController extends AbstractHtmlController {
     @GetMapping
     public String index(Model model) {
         val mine = findMe();
-        val condition = new SearchCondition(SearchCondition.Mode.ALL, mine.getId());
+        val condition = new SearchCondition(SearchCondition.Mode.ALL, mine.getId(), mine.getId());
         Page<Arigato> page = arigatoService.search(Pageable.DEFAULT, condition);
         model.addAttribute("page", page);
         return "home/index";
@@ -49,7 +49,7 @@ public class HomeController extends AbstractHtmlController {
     @GetMapping("/more/{p}")
     public String more(@PathVariable int p, Model model) {
         val mine = findMe();
-        val condition = new SearchCondition(SearchCondition.Mode.ALL, mine.getId());
+        val condition = new SearchCondition(SearchCondition.Mode.ALL, mine.getId(), mine.getId());
         Page<Arigato> page = arigatoService.search(page(p), condition);
         model.addAttribute("page", page);
         return "arigato/more";

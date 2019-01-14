@@ -4,13 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class SearchCondition {
-    public enum Mode {ALL, FROM_ME, TO_ME};
+    public enum Mode {ALL, FROM, TO};
 
     private Mode mode;
+    private long userId;
     private long mineId;
 
-    public SearchCondition(Mode mode, long mineId) {
+    public SearchCondition(Mode mode, long userId, long mineId) {
         this.mode = mode;
+        this.userId = userId;
         this.mineId = mineId;
     }
 
@@ -20,6 +22,10 @@ public class SearchCondition {
 
     public void setMode(Mode mode) {
         this.mode = mode;
+    }
+
+    public long getUserId() {
+        return userId;
     }
 
     public long getMineId() {
