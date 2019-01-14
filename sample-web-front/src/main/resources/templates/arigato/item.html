@@ -7,7 +7,7 @@
         <div th:text="${arigato.body}"></div>
         <div th:if="${arigato.hasImage()}" ><image width="300px" th:src="@{/arigato/__${arigato.id}__/image/__${arigato.firstImageId}__}" /><a th:if="${arigato.fromMe}" href="javascript:void(0)" class="deleteImage glyphicon glyphicon-trash" th:data-arigato-id="${arigato.id}" th:data-id="${arigato.firstImageId}">画像を削除</a></div>
         <div>
-            <span th:text="${#temporals.format(arigato.createdAt, 'yyyy/MM/dd HH:mm:ss')}" />
+            <span th:text="${#temporals.format(arigato.createdAt, 'yyyy/MM/dd HH:mm')}" />
             <span th:if="${arigato.fromMe}"><a th:href="@{/arigato/__${arigato.id}__}" class="glyphicon glyphicon-pencil">編集</a>&nbsp;<a href="javascript:void(0)" class="delete glyphicon glyphicon-trash" th:data-id="${arigato.id}">削除</a></span>
             <span class="glyphicon glyphicon-star">いいね！<span class="favCounts" th:text="${arigato.favCounts}">13</span>人 <a href="javascript:void(0)" th:data-id="${arigato.id}" th:class="${'glyphicon fav ' + (arigato.fav ? 'checked glyphicon-thumbs-down' : 'glyphicon-thumbs-up')}">いいね！</a></span>
         </div>
