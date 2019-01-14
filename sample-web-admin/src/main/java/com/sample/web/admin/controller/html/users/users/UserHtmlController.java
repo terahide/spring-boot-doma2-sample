@@ -203,6 +203,8 @@ public class UserHtmlController extends AbstractHtmlController {
 
             // 取得したDtoをFromに詰め替える
             modelMapper.map(user, form);
+
+            model.addAttribute("user", user);
         }
 
         return "modules/users/users/new";
