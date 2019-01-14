@@ -5,9 +5,11 @@ import com.sample.domain.dto.arigato.SearchCondition;
 import com.sample.domain.dto.common.DefaultPageable;
 import com.sample.domain.dto.common.Page;
 import com.sample.domain.dto.common.Pageable;
+import com.sample.domain.dto.system.UploadFile;
 import com.sample.domain.service.arigato.ArigatoService;
 import com.sample.domain.service.users.UserService;
 import com.sample.web.base.controller.html.AbstractHtmlController;
+import com.sample.web.base.util.MultipartFileUtils;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,9 +91,33 @@ public class AccountController extends AbstractHtmlController {
     }
 
     @GetMapping("/profile")
-    public String showProfile(Model model) {
-        //TODO 実装してね
+    public String showProfile(@ModelAttribute("profileForm")ProfileForm form, Model model) {
+        val mine = findMe();
+        modelMapper.map(mine, form);
+        model.addAttribute("user", mine);
         return "account/profile";
+    }
+
+    @PostMapping("/profile")
+    public String updateProfile(@Validated @ModelAttribute("profileForm")ProfileForm form, BindingResult br, RedirectAttributes attributes) {
+        if(br.hasErrors()){
+            setFlashAttributeErrors(attributes, br);
+            return "redirect:/account/profile";
+        }
+
+        val mine = findMe();
+        modelMapper.map(form, mine);
+
+        val image = form.getUserImage();
+        if (image != null && !image.isEmpty()) {
+            val uploadFile = new UploadFile();
+            MultipartFileUtils.convert(image, uploadFile);
+            mine.setUploadFile(uploadFile);
+        }
+
+        userService.update(mine);
+
+        return "redirect:/account";
     }
 
     @GetMapping("/password")
