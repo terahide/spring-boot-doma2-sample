@@ -17,7 +17,7 @@
     <br />
     <div><a th:href="@{/account/profile}" id="toProfile" class="glyphicon glyphicon-pencil">プロフィール編集</a> <a th:href="@{/account/password}" id="toPassword" class="glyphicon glyphicon-info-sign">パスワード変更</a></div>
     <hr />
-    <div><a href="javascript:void(0)" id="fromMeToggle" class="glyphicon glyphicon-comment">あなたへのありがと</a> <a href="javascript:void(0)" id="toMeToggle" class="glyphicon glyphicon-folder-open">あなたからありがと</a></div>
+    <div><a href="javascript:void(0)" id="fromMeToggle" class="glyphicon glyphicon-comment"><span th:text="${user.name}" /> さんへのありがとへ</a> <a href="javascript:void(0)" id="toMeToggle" class="glyphicon glyphicon-folder-open"><span th:text="${user.name}" /> さんからのありがとへ</a></div>
     <div id="fromMe">
         <section class="arigato unsetup" th:each="arigato : ${page_from.data}" th:object="${arigato}">
             <hr />
