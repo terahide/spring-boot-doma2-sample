@@ -6,6 +6,7 @@ import com.sample.domain.dto.user.User;
 import com.sample.domain.dto.user.UserCriteria;
 import com.sample.domain.exception.NoDataFoundException;
 import com.sample.domain.service.users.UserService;
+import com.sample.web.base.util.WebSecurityUtils;
 import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,5 +72,9 @@ public class BaseController {
         val criteria = new UserCriteria();
         criteria.setEmail(email);
         return userService.findById(criteria).orElseThrow(() -> new NoDataFoundException("ユーザが見つかりません。email:"+email));
+    }
+
+    protected User findMe(){ //TODO 共通化したい
+        return findUserBy(WebSecurityUtils.getLoginId());
     }
 }

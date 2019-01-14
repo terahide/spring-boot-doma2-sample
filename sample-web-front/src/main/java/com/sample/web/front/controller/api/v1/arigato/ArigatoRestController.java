@@ -66,8 +66,4 @@ public class ArigatoRestController extends AbstractRestController {
     public String getFunctionName() {
         return "F_API_Arigato";
     }
-
-    protected User findMe(){ //TODO 共通化したい
-        return findUserBy(WebSecurityUtils.getLoginId());
-    }
 }

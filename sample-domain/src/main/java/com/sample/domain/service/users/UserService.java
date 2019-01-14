@@ -2,6 +2,7 @@ package com.sample.domain.service.users;
 
 import java.util.Optional;
 
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,5 +100,14 @@ public class UserService extends BaseTransactionalService {
     public User delete(final Long id) {
         Assert.notNull(id, "id must not be null");
         return userRepository.delete(id);
+    }
+
+    public void deleteImage(long userId, long uploadFileId) {
+        val user = findById(userId);
+        if( user.getUploadFileId() != uploadFileId ){
+            //TODO 409
+        }
+        user.setUploadFileId(null);
+        userRepository.update(user);
     }
 }

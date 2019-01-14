@@ -56,8 +56,4 @@ public abstract class AbstractHtmlController extends BaseController implements F
     public void setFlashAttributeErrors(RedirectAttributes attributes, BindingResult result) {
         attributes.addFlashAttribute(MAV_ERRORS, result);
     }
-
-    protected User findMe(){
-        return findUserBy(WebSecurityUtils.getLoginId());
-    }
 }

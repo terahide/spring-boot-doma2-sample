@@ -13,7 +13,7 @@
           enctype="multipart/form-data" >
         <div class="box-body">
 
-            <div id="imageContainer"><image th:unless="${user.hasImage()}" height="200px" th:src="@{/static/images/no_photo.png}" /><image th:if="${user.hasImage()}" height="200px" th:src="@{/user/__${user.id}__/image}" /></div>
+            <div id="imageContainer"><image th:unless="${user.hasImage()}" height="200px" th:src="@{/static/images/no_photo.png}" /><image th:if="${user.hasImage()}" height="200px" th:src="@{/user/__${user.id}__/image}" /><a th:if="${user.hasImage()}" href="javascript:void(0)" id="deleteImage" class="glyphicon glyphicon-trash" th:data-id="${user.uploadFileId}">画像を削除</a></div>
             <br />
             <input th:replace="~{common/inputField :: input ('text', '苗字', 'lastName')}" />
             <input th:replace="~{common/inputField :: input ('text', '名前', 'firstName')}" />
@@ -33,7 +33,21 @@
 </div>
 <div layout:fragment="scripts" th:remove="tag">
     <script type="text/javascript">
+        $.ajaxSetup({
+            headers: { 'X-XSRF-TOKEN': $('input[name="_csrf"]').val() }
+        });
         $().ready(() => {
+            $('#deleteImage').on('click',(event) => {
+                var $this = $(event.currentTarget);
+                $.ajax({
+                    url: '/api/v1/account/image/' + $this.data('id'),
+                    type: 'DELETE'
+                }).done( (data) => {
+                    location.reload();
+                }).fail( (data) => {
+                    alert('error'); //TODO Fake It
+                })
+            });
             $('input[name="userImage"]').on('change', event => {
                 $('#imageContainer').hide();
             });
